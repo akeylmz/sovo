@@ -332,7 +332,7 @@ class Fail(models.Model):
             ('Onarımda', 'Onarımda'),
             ('Onarıldı', 'Onarıldı'),
 
-        ), 
+        ),
         default="Belirlendi"
     )    
     Fail_Detection_Date = models.DateField(blank=True, null=True)

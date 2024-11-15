@@ -57,7 +57,8 @@ urlpatterns = [
     path("api/v1/events/", api_view.EventsListCreateAPIView.as_view(), name='api-event'),
     path('api/v1/events/<pk>', api_view.EventsDetailAPIView.as_view(), name='api-events-detail'),
     
-    
+    path("get_dollar_rate/<str:date>/", api_view.get_dollar_rate, name='get_dollar_rate'),
+
     #******************************* ------- ***********************************
 
 ]

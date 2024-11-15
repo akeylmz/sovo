@@ -1,3 +1,5 @@
+import json
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -17,6 +19,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+import requests
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -197,3 +201,24 @@ class EventsDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=EventsSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+def get_dollar_rate(request, date):
+    headers={'key':'qYyWXNCbA0'}
+    response = requests.get(f"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S&startDate={date}&endDate={date}&type=json", headers=headers)
+    #api='qYyWXNCbA0'
+    #evds = e.evdsAPI(api)
+    #dollar =  evds.get_data(['TP.DK.USD.S.YTL'], startdate=date, enddate=date)    
+    
+    data = json.loads(response.content)
+
+    # JSON verilerini işleyin
+    items = data.get('items', [])
+    if items:
+        tarih = items[0]['Tarih']
+        usd_degeri = items[0]['TP_DK_USD_S']
+        print(f"Tarih: {tarih}, USD Değeri: {usd_degeri}")
+    else:
+        print("Belirtilen tarih için veri bulunamadı.")
+    #rate=dollar.TP_DK_USD_S_YTL.values[0]
+    #rate = round(rate, 4)  # 4 ondalık basamak
+    return JsonResponse({'rate': usd_degeri})
