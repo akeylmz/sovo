@@ -8,11 +8,11 @@ function CustomNumberInput({ field, form, decimalScale, disabled }) {
       className='field-control'
       onValueChange={(e) => setFieldValue(field.name, e.floatValue)}
       value={disabled ? '' : field.value}
-      placeholder='0,00'
+      placeholder={decimalScale === 0 ? '0' : '0,00'}
       thousandSeparator='.'
       decimalSeparator=','
       decimalScale={decimalScale ? decimalScale : 2}
-      fixedDecimalScale
+      fixedDecimalScale={decimalScale === 0 ? false : true}
       onBlur={() => setFieldTouched(field.name, true)}
       disabled={disabled}
     />

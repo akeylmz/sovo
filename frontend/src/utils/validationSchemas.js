@@ -108,3 +108,33 @@ export const salesProcessCommentValidation = Yup.object({
   Comment_Telno_Card_7: phoneValidation,
   Comment_Date_Card_7: dateValidation,
 })
+
+export const operationCareValidation = Yup.object({
+  Operation_Care_Company: Yup.string().required('Bu alan zorunludur'),
+  Operation_Care_Inventor_Brand: Yup.string(),
+  Operation_Care_Panel_Brand: Yup.string(),
+
+  Operation_Care_Location: Yup.string(),
+  Operation_Care_Inventor_Power: Yup.string(),
+  Operation_Care_Panel_Power: Yup.string(),
+
+  Operation_Care_Address: Yup.string(),
+  Operation_Care_Inventor_Number: Yup.string(),
+  Operation_Care_VOC: Yup.string(),
+
+  Operation_Care_Terrain_Roof: Yup.string(),
+  Operation_Care_AC_Power: Yup.string(),
+  Operation_Care_Number_Str: Yup.string(),
+
+  Operation_Care_Switchgear_Material: Yup.string(),
+  Operation_Care_DC_Power: Yup.string(),
+  Operation_Care_Panel_Number_Str: Yup.string(),
+
+  Operation_Care_Start_Date: Yup.string(),
+  Operation_Care_endContract_Date: Yup.string(),
+  Operation_Care_Direction: Yup.string(),
+})
+
+export const powerPlantValidation = Yup.object({
+  PowerPlantName: Yup.string().required('Bu alan zorunludur'),
+})

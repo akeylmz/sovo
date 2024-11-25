@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { projectExpenseValidation } from '../../../../utils/validationSchemas'
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSuppliers } from '../../../../store/slices/supplierSlice'
 import { useParams } from 'react-router-dom'
 import { exchangeRateTimeList, typeOfJobList, companyUndertakingWorkList, bankList } from '../../../../static/datas'
+import { getDollarRate } from '../../../../utils/functions'
 
 function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
   const { id } = useParams()
@@ -72,7 +73,7 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
             onClose()
           }}
         >
-          {() => (
+          {({ values, errors, setFieldValue, setFieldError }) => (
             <Form>
               <div className='modal-body two-column'>
                 <div className='field-group'>
@@ -137,7 +138,7 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
 
                 <div className='field-group'>
                   <label className='field-title'>Kur Saati</label>
-                  <Field name='-'>
+                  <Field name='chosen'>
                     {({ field, form }) => (
                       <CustomSelect
                         options={exchangeRateTimeList}
@@ -147,15 +148,35 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
                       />
                     )}
                   </Field>
-                  <ErrorMessage name='-' component='div' className='field-error-message' />
+                  <ErrorMessage name='chosen' component='div' className='field-error-message' />
                 </div>
 
                 <div className='field-group'>
                   <label className='field-title'>Dolar Kuru (₺)</label>
-                  <Field name='Dollar_Rate_Expenses'>
-                    {({ field, form }) => <CustomNumberInput field={field} form={form} decimalScale={4} />}
-                  </Field>
-                  <ErrorMessage name='Dollar_Rate_Expenses' component='div' className='field-error-message' />
+                  <div className='relative'>
+                    <Field name='Dollar_Rate_Expenses'>
+                      {({ field, form }) => <CustomNumberInput field={field} form={form} decimalScale={4} />}
+                    </Field>
+                    <button
+                      type='button'
+                      onClick={async () => {
+                        const response = await getDollarRate(values.Date_Expenses, values.chosen)
+
+                        if (response.status) {
+                          setFieldValue('Dollar_Rate_Expenses', response.data)
+                        } else {
+                          setFieldError('Dollar_Rate_Expenses', response.message)
+                        }
+                      }}
+                      className='flex items-center absolute px-2 top-0 bottom-0 right-0 text-2xl text-slate-500'
+                    >
+                      <BiSolidBadgeDollar />
+                    </button>
+                  </div>
+
+                  {errors.Dollar_Rate_Expenses && (
+                    <div className='field-error-message'>{errors.Dollar_Rate_Expenses}</div>
+                  )}
                 </div>
 
                 <div className='field-group'>

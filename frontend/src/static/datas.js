@@ -1,3 +1,10 @@
+export const directionList = [
+  { value: 'Kuzey', label: 'Kuzey' },
+  { value: 'Güney', label: 'Güney' },
+  { value: 'Doğu', label: 'Doğu' },
+  { value: 'Batı', label: 'Batı' },
+]
+
 export const bankList = [
   { value: 'Akbank', label: 'Akbank' },
   { value: 'Anadolubank', label: 'Anadolubank' },

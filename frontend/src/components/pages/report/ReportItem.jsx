@@ -1,30 +1,31 @@
 import { useState } from 'react'
 import { Pie, Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { formatNumber } from '../../../utils/valueFormatters'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-function ReportItem() {
-  const [activeTab, setActiveTab] = useState(1)
+function ReportItem({ data }) {
+  const [activeTab, setActiveTab] = useState(2)
 
   const genel = {
     labels: ['ALINAN ÖDEME', 'ÖDENMESİ GEREKEN'],
     datasets: [
       {
         label: 'Tutar',
-        data: [100000, 50000],
-        backgroundColor: ['#3aaf0c', '#93d9cb'],
-        hoverBackgroundColor: ['#3aaf0c', '#93d9cb'],
+        data: [data.receivedAmount, data.debtRemaining],
+        backgroundColor: ['#09bb9f', '#1d81a2'],
+        hoverBackgroundColor: ['#09bb9f', '#1d81a2'],
       },
     ],
   }
 
   const detay = {
-    labels: ['ALINAN', 'GELEN', 'KALAN'],
+    labels: ['GELİR', 'GİDER', 'KALAN'],
     datasets: [
       {
         label: 'Tutar',
-        data: [25000, 25000, 25000],
+        data: [data.receivedAmount, data.paidAmount, data.agreedAmount - data.receivedAmount],
         backgroundColor: ['#3aaf0c', '#7acbf5', '#28b397'],
         hoverBackgroundColor: ['#3aaf0c', '#7acbf5', '#28b397'],
       },
@@ -32,11 +33,11 @@ function ReportItem() {
   }
 
   const kar = {
-    labels: ['NET KAR', 'KDV'],
+    labels: ['KDV İADESİ HARİÇ KAR', 'KDV İADESİ DAHİL KAR'],
     datasets: [
       {
         label: 'Tutar',
-        data: [100000, 150000],
+        data: [data.kdvExcludingProfit, data.kdvIncludingProfit],
         backgroundColor: ['#3aaf0c', '#2f87b4'],
         hoverBackgroundColor: ['#3aaf0c', '#2f87b4'],
       },
@@ -64,11 +65,11 @@ function ReportItem() {
         <div className='flex flex-col'>
           <div className='flex justify-between'>
             <span className='font-semibold text-gray-700'>Proje :</span>
-            <span className='text-sm font-bold text-soento-green'>AYZER DÖKÜM</span>
+            <span className='text-sm font-bold text-soento-green'>{data.projectName}</span>
           </div>
           <div className='flex justify-between'>
             <span className='font-semibold text-gray-700'>Anlaşılan Miktar :</span>
-            <span className='text-sm font-bold'>12.750.000 $</span>
+            <span className='text-sm font-bold'>{formatNumber(data.agreedAmount)} $</span>
           </div>
         </div>
 
@@ -96,12 +97,12 @@ function ReportItem() {
       <div className='flex p-4 text-white'>
         <div className='w-1/2 flex flex-col items-start'>
           <span className='text-xs font-semibold'>GENEL KALAN</span>
-          <span className='text-xl font-bold'>$ 9.750.000</span>
+          <span className='text-xl font-bold'>{formatNumber(data.totalRemaining)} $</span>
         </div>
         <div className='h-full border border-gray-200'></div>
         <div className='w-1/2 flex flex-col items-end'>
           <span className='text-xs font-semibold'>HARCAMA CARİ DURUM</span>
-          <span className='text-xl font-bold'>1.500.000 $</span>
+          <span className='text-xl font-bold'>{formatNumber(data.financialBalance)} $</span>
         </div>
       </div>
     </div>

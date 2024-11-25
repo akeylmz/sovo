@@ -153,7 +153,7 @@ const CustomTable = ({
 
                     {/* For maintenance detail button on table */}
                     {handleMaintenanceDetail && (
-                      <button className='m-3 me-0' onClick={() => navigate(`details/${item.id}`)}>
+                      <button className='m-3 me-0' onClick={() => navigate(`/operation-care/details/${item.id}`)}>
                         <LuArrowUpRightSquare className='text-soento-green' />
                       </button>
                     )}
@@ -179,12 +179,10 @@ const CustomTable = ({
                       {item[col.key] === null || item[col.key] === '' ? (
                         '-'
                       ) : handleReviseDetail && col.key === 'x_Situation_Card' ? (
-                        <>
-                          <div className='flex items-center gap-2'>
-                            <FaCircle style={{ color: colorMap[item[col.key]] || '#000' }} />
-                            {item[col.key]}
-                          </div>
-                        </>
+                        <div className='flex items-center gap-2'>
+                          <FaCircle style={{ color: colorMap[item[col.key]] || '#000' }} />
+                          {item[col.key]}
+                        </div>
                       ) : (
                         item[col.key]
                       )}

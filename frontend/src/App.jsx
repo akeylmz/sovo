@@ -33,6 +33,12 @@ import Products from './components/pages/stock/products/Products'
 import Statistic from './components/pages/stock/statistic/Statistic'
 import Stores from './components/pages/stock/stores/Stores'
 import Orders from './components/pages/stock/orders/Orders'
+import Detail from './components/pages/operation-care/detail/Detail'
+import TrackList from './components/pages/operation-care/detail/track-list/TrackList'
+import TrackBreakdown from './components/pages/operation-care/detail/track-breakdown/TrackBreakdown'
+import TrackMaintenance from './components/pages/operation-care/detail/track-maintenance/TrackMaintenance'
+import ReportChart from './components/pages/report/ReportChart'
+import ReportTable from './components/pages/report/ReportTable'
 
 function App() {
   return (
@@ -49,23 +55,29 @@ function App() {
         <Route
           path='/'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <Home />
             </PrivateRoute>
           }
         />
+
+        {/* ---------------------------------------------------------------------------------- */}
+
         <Route
           path='/client'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <Client />
             </PrivateRoute>
           }
         />
+
+        {/* ---------------------------------------------------------------------------------- */}
+
         <Route
           path='/supplier'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <Supplier />
             </PrivateRoute>
           }
@@ -76,7 +88,7 @@ function App() {
         <Route
           path='/project'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <Project />
             </PrivateRoute>
           }
@@ -84,7 +96,7 @@ function App() {
         <Route
           path='/project/details/:id'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <ProjectDetail />
             </PrivateRoute>
           }
@@ -92,7 +104,7 @@ function App() {
         <Route
           path='/project/details/income/:id'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <ProjectIncome />
             </PrivateRoute>
           }
@@ -100,7 +112,7 @@ function App() {
         <Route
           path='/project/details/realized-cost/:id'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <ProjectRealizedCost />
             </PrivateRoute>
           }
@@ -108,7 +120,7 @@ function App() {
         <Route
           path='/project/details/realized-cost-summary/:id'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Proje']}>
               <ProjectCostSummary />
             </PrivateRoute>
           }
@@ -119,7 +131,7 @@ function App() {
         <Route
           path='/sales-offer'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Satis']}>
               <SalesOffer />
             </PrivateRoute>
           }
@@ -135,7 +147,7 @@ function App() {
         <Route
           path='/sales-offer/revises/:id'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Satis']}>
               <Revises />
             </PrivateRoute>
           }
@@ -146,7 +158,7 @@ function App() {
         <Route
           path='/stock'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Stok']}>
               <Stock />
             </PrivateRoute>
           }
@@ -164,7 +176,7 @@ function App() {
         <Route
           path='/operation-care'
           element={
-            <PrivateRoute allowedGroups={['Admin']}>
+            <PrivateRoute allowedGroups={['Admin', 'Bakim']}>
               <OperationCare />
             </PrivateRoute>
           }
@@ -173,6 +185,20 @@ function App() {
           <Route path='maintenance' element={<Maintenance />} />
           <Route path='breakdown' element={<Breakdown />} />
           <Route path='invoices' element={<Invoices />} />
+        </Route>
+
+        <Route
+          path='/operation-care/details/:id'
+          element={
+            <PrivateRoute allowedGroups={['Admin', 'Bakim']}>
+              <Detail />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Navigate to='track-list' />} />
+          <Route path='track-list' element={<TrackList />} />
+          <Route path='track-breakdown' element={<TrackBreakdown />} />
+          <Route path='track-maintenance' element={<TrackMaintenance />} />
         </Route>
 
         {/* ---------------------------------------------------------------------------------- */}
@@ -184,7 +210,13 @@ function App() {
               <Report />
             </PrivateRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to='chart' />} />
+          <Route path='chart' element={<ReportChart />} />
+          <Route path='table' element={<ReportTable />} />
+        </Route>
+
+        {/* ---------------------------------------------------------------------------------- */}
 
         <Route
           path='/calendar'

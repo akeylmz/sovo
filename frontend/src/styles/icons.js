@@ -57,11 +57,14 @@ import { HiOutlineArrowNarrowRight } from 'react-icons/hi'
 import { IoWarning } from 'react-icons/io5'
 import { TbCurrencyLira } from 'react-icons/tb'
 import { MdPriceChange } from 'react-icons/md'
-
 import { IoChevronForward } from 'react-icons/io5'
 import { IoChevronBackOutline } from 'react-icons/io5'
+import { IoCalculator } from 'react-icons/io5'
+import { BiSolidBadgeDollar } from 'react-icons/bi'
 
 export {
+  BiSolidBadgeDollar,
+  IoCalculator,
   IoChevronForward,
   IoChevronBackOutline,
   MdPriceChange,

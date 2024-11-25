@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, IoCalculator } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { salesProcessValidation } from '../../../../utils/validationSchemas'
@@ -11,8 +11,6 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClients } from '../../../../store/slices/clientSlice'
 import { cities, terrainRoofList, offerSituationList } from '../../../../static/datas'
-
-import { IoCalculator } from 'react-icons/io5'
 
 function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const dispatch = useDispatch()

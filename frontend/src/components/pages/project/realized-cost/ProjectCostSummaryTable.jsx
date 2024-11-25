@@ -18,7 +18,7 @@ function ProjectCostSummaryTable({ data }) {
   const newData = data.map((item) => ({
     ...item,
     x_totalJobAmount: formatNumber(item.totalJobAmount) + '₺',
-    x_totalJobAmountUSD: formatNumber(item.totalJobAmountUSD) + '₺',
+    x_totalJobAmountUSD: formatNumber(item.totalJobAmountUSD) + '$',
     x_totalExpenseAmount: formatNumber(item.totalExpenseAmount) + '₺',
     x_totalExpenseAmountUSD: formatNumber(item.totalExpenseAmountUSD) + '$',
   }))

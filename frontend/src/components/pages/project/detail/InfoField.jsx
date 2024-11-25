@@ -28,7 +28,7 @@ function InfoField({ details }) {
       if (details.project_expenses.length !== 0) {
         let usdTotal = 0
         details.project_expenses.forEach((item) => {
-          usdTotal += Number(item.Amount_Usd_Expenses) || 0
+          usdTotal += Number(item.Amount_USD_Expenses) || 0
         })
         setTotalAmountExpense(usdTotal)
       }

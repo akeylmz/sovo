@@ -1,23 +1,19 @@
 import '../../../styles/OperationCare.css'
 import { useState } from 'react'
-import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { IoMdAddCircle, GrVmMaintenance, IoWarning } from '../../../styles/icons'
+import MaintenanceModal from './maintenance/MaintenanceModal'
+import { addOperationCare } from '../../../store/slices/operationCareSlice'
 
 function OperationCare() {
-  const [showModal, setShowModal] = useState(false)
-  const [currentData, setCurrentData] = useState(null) // Güncellenecek veri için
+  const dispatch = useDispatch()
 
-  const navigate = useNavigate()
-  const location = useLocation()
-  const isButtonActive = location.pathname === '/operation-care/maintenance'
+  const [showMaintenanceModal, setShowMaintenanceModal] = useState(false)
+  const [showBreakdownModal, setShowBreakdownModal] = useState(false)
 
-  const openModalForAdd = () => {
-    setCurrentData(null)
-    setShowModal(true)
-
-    if (!isButtonActive) {
-      navigate('/operation-care/maintenance')
-    }
+  const handleSubmitMaintenance = (maintenance) => {
+    dispatch(addOperationCare(maintenance))
   }
 
   const subLinks = [
@@ -45,20 +41,29 @@ function OperationCare() {
           </div>
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 my-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
-            onClick={openModalForAdd}
+            onClick={() => setShowBreakdownModal(true)}
           >
             <IoWarning className='text-lg' /> Arıza Bildir
           </button>
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 my-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
-            onClick={openModalForAdd}
+            onClick={() => setShowMaintenanceModal(true)}
           >
             <IoMdAddCircle className='text-lg' /> Bakım Başlat
           </button>
         </div>
       </div>
 
-      <Outlet context={[showModal, setShowModal, currentData, setCurrentData]} />
+      {showMaintenanceModal && (
+        <MaintenanceModal onSubmit={handleSubmitMaintenance} onClose={() => setShowMaintenanceModal(false)} />
+      )}
+
+      {showBreakdownModal && (
+        // <BreakdownModal onSubmit={handleSubmitBreakdown} onClose={() => setShowBreakdownModal(false)} />
+        <div></div>
+      )}
+
+      <Outlet />
     </>
   )
 }
