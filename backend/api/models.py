@@ -19,6 +19,12 @@ class PowerPlant(models.Model):
     def __str__(self):
         return self.PowerPlantName
 
+
+class PersonRelated(models.Model):
+    PersonRelatedName = models.CharField(max_length=63) 
+    def __str__(self):
+        return self.PersonRelatedName
+    
 class Clients(models.Model):
     CompanyName_Clients = models.CharField(max_length=63, unique=True)
     ContactPerson = models.CharField(max_length=63, blank=True, null=True)
@@ -43,7 +49,13 @@ class Project(models.Model):
     ProjectName = models.CharField(max_length=63, blank=True, null=True, unique=True)
     ProjectCode = models.CharField(max_length=63, blank=True, null=True)
     Company_id = models.ForeignKey(Clients, on_delete=models.SET_NULL, related_name="projects", blank=True, null=True)
-    CompanyUndertakingWork = models.CharField(max_length=63, blank=True, null=True)
+    ProjectPersonRelated = models.ForeignKey(
+        PersonRelated,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="project_person_related"
+    )
     Location = models.CharField(max_length=200, blank=True, null=True)
     Cost_NotIncludingKDV = models.FloatField( blank=True, null=True, default=0)
     AC_Power = TwoDecimalField(blank=True, null=True,default=0)

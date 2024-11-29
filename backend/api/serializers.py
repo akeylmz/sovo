@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Clients, Date, Events, Supplier, Project, Expenses, JobHistory, Incomes,  Fail, SalesOfferCard,SalesOfferCard_Revise, Operation_Care, Inventor, String, Poll, PowerPlant
+from .models import Clients, Date, Events, Supplier, Project, Expenses, JobHistory, Incomes,  Fail, SalesOfferCard,SalesOfferCard_Revise, Operation_Care, Inventor, String, Poll, PowerPlant, PersonRelated
 from django.db.models import Max, Count
 from dateutil.relativedelta import relativedelta
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -15,8 +15,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['groups'] = [group.name for group in user.groups.all()]  # Kullanıcının dahil olduğu gruplar
 
         return token
-
-
 
 class ClientSerializer(serializers.ModelSerializer):
 
@@ -49,6 +47,22 @@ class PowerPlantSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.PowerPlantName = validated_data.get('PowerPlantName', instance.PowerPlantName)
+        
+
+        instance.save()
+        return instance
+
+class PersonRelatedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PersonRelated
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return PersonRelated.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.PersonRelatedName = validated_data.get('PersonRelatedName', instance.PersonRelatedName)
         
 
         instance.save()

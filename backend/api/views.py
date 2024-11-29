@@ -10,8 +10,8 @@ from rest_framework import generics
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
-from .serializers import ClientSerializer, CustomTokenObtainPairSerializer, FailSerializer, SupplierSerializer, ProjectSerializer, ExpensesSerializer,PollSerializer ,JobHistorySerializer, IncomesSerializer,SalesOfferCardSerializer, SalesOfferCardReviseSerializer, OperationCareSerializer, InventorSerializer, StringSerializer, PowerPlantSerializer, EventsSerializer, DateSerializer
-from .models import Date, Events, Project, Expenses, Incomes, JobHistory, Inventor, Poll, PowerPlant
+from .serializers import ClientSerializer, CustomTokenObtainPairSerializer, FailSerializer, SupplierSerializer, PersonRelatedSerializer, ProjectSerializer, ExpensesSerializer,PollSerializer ,JobHistorySerializer, IncomesSerializer,SalesOfferCardSerializer, SalesOfferCardReviseSerializer, OperationCareSerializer, InventorSerializer, StringSerializer, PowerPlantSerializer, EventsSerializer, DateSerializer
+from .models import Date, Events, Project, Expenses, Incomes, JobHistory, Inventor, Poll, PowerPlant, PersonRelated
 from .models import SalesOfferCard,SalesOfferCard_Revise, Clients, Operation_Care
 from .models import Supplier, Operation_Care, Fail, Inventor, String
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -84,6 +84,19 @@ class ClientDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ClientSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+class PersonRelatedsListCreateAPIView(generics.ListCreateAPIView):
+    queryset= PersonRelated.objects.all()
+    serializer_class=PersonRelatedSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+class PersonRelatedDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset= PersonRelated.objects.all()
+    serializer_class=PersonRelatedSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
 class PowerPlantsListCreateAPIView(generics.ListCreateAPIView):
     queryset= PowerPlant.objects.all()
     serializer_class=PowerPlantSerializer
@@ -95,6 +108,7 @@ class PowerPlantDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=PowerPlantSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
 class SuppliersListCreateAPIView(generics.ListCreateAPIView):
     queryset= Supplier.objects.all()
     serializer_class=SupplierSerializer

@@ -8,6 +8,9 @@ urlpatterns = [
     
     path('api/v1/project/', api_view.ProjectListCreateAPIView.as_view(), name='api-projects'),
     path('api/v1/project/<pk>', api_view.ProjectDetailAPIView.as_view(), name='api-project-detail'),
+    
+    path('api/v1/person-related/', api_view.PersonRelatedsListCreateAPIView.as_view(), name='api-person-related'),
+    path('api/v1/person-related/<pk>', api_view.PersonRelatedDetailAPIView.as_view(), name='api-person-related-detail'),
 
     path('api/v1/client/', api_view.ClientsListCreateAPIView.as_view(), name='api-clients'),
     path('api/v1/client/<pk>', api_view.ClientDetailAPIView.as_view(), name='api-client-detail'),
