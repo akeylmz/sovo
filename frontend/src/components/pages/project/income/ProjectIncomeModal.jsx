@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar, MdAddBox } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { projectIncomeValidation } from '../../../../utils/validationSchemas'
@@ -7,17 +7,19 @@ import { motion } from 'framer-motion'
 import CustomSelect from '../../../custom/CustomSelect'
 import CustomDateInput from '../../../custom/CustomDateInput'
 import CustomNumberInput from '../../../custom/CustomNumberInput'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClients } from '../../../../store/slices/clientSlice'
 import { useParams } from 'react-router-dom'
 import { companyUndertakingWorkList, paymentMethodList, exchangeRateTimeList } from '../../../../static/datas'
 import { getDollarRate } from '../../../../utils/functions'
+import AddClientModal from '../AddClientModal'
 
 function ProjectIncomeModal({ initialData, onSubmit, onClose }) {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { clients } = useSelector((state) => state.client)
+  const [showAddClientModal, setShowAddClientModal] = useState(false)
 
   useEffect(() => {
     if (!clients || clients.length === 0) {
@@ -72,7 +74,13 @@ function ProjectIncomeModal({ initialData, onSubmit, onClose }) {
             <Form>
               <div className='modal-body two-column'>
                 <div className='field-group'>
-                  <label className='field-title'>Ödeme Yapan Firma</label>
+                  <div className='flex gap-2 items-center'>
+                    <label className='field-title'>Ödeme Yapan Firma</label>
+                    <button type='button' onClick={() => setShowAddClientModal(true)}>
+                      <MdAddBox className='text-soento-green text-xl' />
+                    </button>
+                  </div>
+
                   <Field name='CompanyName_Pay_Incomes'>
                     {({ field, form }) => (
                       <CustomSelect options={clientList} field={field} form={form} placeholder='Firma adı seçiniz' />
@@ -193,6 +201,8 @@ function ProjectIncomeModal({ initialData, onSubmit, onClose }) {
           )}
         </Formik>
       </div>
+
+      {showAddClientModal && <AddClientModal onClose={() => setShowAddClientModal(false)} />}
     </>,
     document.body
   )

@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar, MdAddBox } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { projectExpenseValidation } from '../../../../utils/validationSchemas'
@@ -7,17 +7,19 @@ import { motion } from 'framer-motion'
 import CustomSelect from '../../../custom/CustomSelect'
 import CustomDateInput from '../../../custom/CustomDateInput'
 import CustomNumberInput from '../../../custom/CustomNumberInput'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSuppliers } from '../../../../store/slices/supplierSlice'
 import { useParams } from 'react-router-dom'
 import { exchangeRateTimeList, typeOfJobList, companyUndertakingWorkList, bankList } from '../../../../static/datas'
 import { getDollarRate } from '../../../../utils/functions'
+import AddSupplierModal from './AddSupplierModal'
 
 function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { suppliers } = useSelector((state) => state.supplier)
+  const [showAddSupplierModal, setShowAddSupplierModal] = useState(false)
 
   useEffect(() => {
     if (!suppliers || suppliers.length === 0) {
@@ -77,7 +79,12 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
             <Form>
               <div className='modal-body two-column'>
                 <div className='field-group'>
-                  <label className='field-title'>Ödeme Yapılan Firma</label>
+                  <div className='flex gap-2 items-center'>
+                    <label className='field-title'>Ödeme Yapılan Firma</label>
+                    <button type='button' onClick={() => setShowAddSupplierModal(true)}>
+                      <MdAddBox className='text-soento-green text-xl' />
+                    </button>
+                  </div>
                   <Field name='CompanyName_Paying_Expenses'>
                     {({ field, form }) => (
                       <CustomSelect options={supplierList} field={field} form={form} placeholder='Firma adı seçiniz' />
@@ -198,6 +205,8 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
           )}
         </Formik>
       </div>
+
+      {showAddSupplierModal && <AddSupplierModal onClose={() => setShowAddSupplierModal(false)} />}
     </>,
     document.body
   )
