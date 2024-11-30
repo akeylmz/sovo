@@ -48,6 +48,7 @@ function RevisesTable({ data, handleReviseDetail }) {
   const lastData = [
     {
       ...data,
+      id: -1,
       x_Client_Name: data.client.CompanyName_Clients,
       x_AC_Power_Card: formatNumber(data.AC_Power_Card) + ' kWe',
       x_DC_Power_Card: formatNumber(data.DC_Power_Card) + ' kWp',

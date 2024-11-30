@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine, IoCalculator } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, IoCalculator, MdAddBox } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { salesProcessValidation } from '../../../../utils/validationSchemas'
@@ -7,14 +7,18 @@ import { motion } from 'framer-motion'
 import CustomSelect from '../../../custom/CustomSelect'
 import CustomDateInput from '../../../custom/CustomDateInput'
 import CustomNumberInput from '../../../custom/CustomNumberInput'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClients } from '../../../../store/slices/clientSlice'
 import { cities, terrainRoofList, offerSituationList } from '../../../../static/datas'
+import AddClientModal from '../../project/AddClientModal'
+import AddPersonDealModal from './AddPersonDealModal'
 
 function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const dispatch = useDispatch()
   const { clients } = useSelector((state) => state.client)
+  const [showAddClientModal, setShowAddClientModal] = useState(false)
+  const [showAddPersonDealModal, setShowAddPersonDealModal] = useState(false)
 
   useEffect(() => {
     if (!clients || clients.length === 0) {
@@ -25,6 +29,16 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const clientList = clients.map((client) => {
     return { value: client.id, label: client.CompanyName_Clients }
   })
+
+  // useEffect(() => {
+  //   if (!clients || clients.length === 0) {
+  //     dispatch(fetchClients())
+  //   }
+  // }, [dispatch, clients])
+
+  // const clientList = clients.map((client) => {
+  //   return { value: client.id, label: client.CompanyName_Clients }
+  // })
 
   return createPortal(
     <>
@@ -77,7 +91,13 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
             <Form>
               <div className='modal-body three-column'>
                 <div className='field-group'>
-                  <label className='field-title'>Firma Adı</label>
+                  <div className='flex gap-2 items-center'>
+                    <label className='field-title'>Firma Adı</label>
+                    <button type='button' onClick={() => setShowAddClientModal(true)}>
+                      <MdAddBox className='text-soento-green text-xl' />
+                    </button>
+                  </div>
+
                   <Field name='Client_Card'>
                     {({ field, form }) => (
                       <CustomSelect options={clientList} field={field} form={form} placeholder='Firma adı seçiniz' />
@@ -86,8 +106,16 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
                   <ErrorMessage name='Client_Card' component='div' className='field-error-message' />
                 </div>
 
+                {/* ------------------- */}
+
                 <div className='field-group'>
-                  <label className='field-title'>İlgilenen Kişi</label>
+                  <div className='flex gap-2 items-center'>
+                    <label className='field-title'>İlgilenen Kişi</label>
+                    <button type='button' onClick={() => setShowAddPersonDealModal(true)}>
+                      <MdAddBox className='text-soento-green text-xl' />
+                    </button>
+                  </div>
+
                   <Field
                     name='Person_Deal'
                     type='text'
@@ -96,6 +124,8 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
                   />
                   <ErrorMessage name='Person_Deal' component='div' className='field-error-message' />
                 </div>
+
+                {/* ------------------- */}
 
                 <div className='field-group'>
                   <label className='field-title'>Konum</label>
@@ -303,6 +333,10 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
           )}
         </Formik>
       </div>
+
+      {showAddClientModal && <AddClientModal onClose={() => setShowAddClientModal(false)} />}
+
+      {showAddPersonDealModal && <AddPersonDealModal onClose={() => setShowAddPersonDealModal(false)} />}
     </>,
     document.body
   )

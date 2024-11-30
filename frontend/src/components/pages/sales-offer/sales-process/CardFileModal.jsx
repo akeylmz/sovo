@@ -46,18 +46,24 @@ function CardFileModal({ initialData, fileColumn, onClose }) {
               </div>
             </div>
             <div className='modal-footer'>
-              <button
+              {/* <button
                 type='button'
                 className='submit-button'
                 onClick={() => {
                   const link = initialData[fileColumn]
                   if (link) {
-                    window.open(link, '_blank') // Yeni sekmede aç
+                    window.open(link, '_blank')
                   }
                 }}
               >
                 Görüntüle
-              </button>
+              </button> */}
+
+              <a href={`${initialData[fileColumn]}`} download>
+                <button type='button' className='submit-button' onClick={onClose}>
+                  Dosya indir
+                </button>
+              </a>
             </div>
           </>
         ) : (

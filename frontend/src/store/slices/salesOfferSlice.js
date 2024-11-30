@@ -42,7 +42,7 @@ export const updateSalesOfferWithFile = createAsyncThunk('salesOffer/updateSales
 
 // Async action to add single data (for revise)
 export const addSalesOfferRevise = createAsyncThunk('salesOffer/addSalesOfferRevise', async (data) => {
-  const response = await axiosInstance.post('/sales_offer_revise/', data)
+  const response = await axiosInstance.post('/sales_offer_revise/', removeFileColumns(data))
   return response.data
 })
 
