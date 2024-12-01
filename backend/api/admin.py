@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from.models import Project,SalesOfferCard
 from.models import Supplier, Clients,  Incomes, JobHistory, Expenses, SalesOfferCard_Revise
-from.models import Poll, Fail, Operation_Care, Inventor, String, PowerPlant
+from.models import Poll, Fail, Operation_Care, Inventor, String, PowerPlant, PersonRelated
 admin.site.register(Project)
 
 admin.site.register(Supplier)
@@ -19,4 +19,5 @@ admin.site.register(Inventor)
 admin.site.register(String)
 admin.site.register(Poll)
 admin.site.register(PowerPlant)
+admin.site.register(PersonRelated)
 

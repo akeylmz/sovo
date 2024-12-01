@@ -116,7 +116,6 @@ def create_string(sender, instance, created, **kwargs):
 
             )
 
-
 @receiver(post_save, sender=Poll)
 def create_poll_str(sender, instance, created, **kwargs):
     if created:

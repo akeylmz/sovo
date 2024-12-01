@@ -49,13 +49,8 @@ class Project(models.Model):
     ProjectName = models.CharField(max_length=63, blank=True, null=True, unique=True)
     ProjectCode = models.CharField(max_length=63, blank=True, null=True)
     Company_id = models.ForeignKey(Clients, on_delete=models.SET_NULL, related_name="projects", blank=True, null=True)
-    ProjectPersonRelated = models.ForeignKey(
-        PersonRelated,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name="project_person_related"
-    )
+    CompanyUndertakingWork = models.CharField(max_length=63, blank=True, null=True)
+    Person_Related= models.CharField(max_length=63, blank=True, null=True)
     Location = models.CharField(max_length=200, blank=True, null=True)
     Cost_NotIncludingKDV = models.FloatField( blank=True, null=True, default=0)
     AC_Power = TwoDecimalField(blank=True, null=True,default=0)
@@ -142,7 +137,13 @@ class SalesOfferCard(models.Model):
     )    
     Roof_Cost_Card = TwoDecimalField(blank=True, null=True)
     Person_Deal= models.CharField(max_length=63, blank=True, null=True)
-    Person_Related= models.CharField(max_length=63, blank=True, null=True)
+    SalesPersonRelated = models.ForeignKey(
+        PersonRelated,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="sales_person_related"
+    )
     Offer_File_Card = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
     Offer_File_Card_2 = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
     Offer_File_Card_3 = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
@@ -230,7 +231,13 @@ class SalesOfferCard_Revise(models.Model):
     )    
     Roof_Cost_Card = models.IntegerField(blank=True, null=True, default="0")
     Person_Deal= models.CharField(max_length=63, blank=True, null=True)
-    Person_Related= models.CharField(max_length=63, blank=True, null=True)
+    SalesPersonRelated = models.ForeignKey(
+        PersonRelated,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="sales_revise_person_related"
+    )    
     Offer_File_Card = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
     Offer_File_Card_2 = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
     Offer_File_Card_3 = models.FileField(upload_to='offer_files', default="", blank=True, null=True)
