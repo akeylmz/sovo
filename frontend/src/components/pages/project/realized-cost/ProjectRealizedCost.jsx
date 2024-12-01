@@ -183,16 +183,16 @@ function ProjectRealizedCost() {
 
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
-            onClick={openModalForAddExpense}
+            onClick={() => navigate(`/project/details/realized-cost-summary/${id}`)}
           >
-            <IoMdAddCircle className='text-xl' /> Ödeme Ekle
+            <MdPriceChange className='text-xl' /> Toplam Maliyet
           </button>
 
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
-            onClick={() => navigate(`/project/details/realized-cost-summary/${id}`)}
+            onClick={openModalForAddExpense}
           >
-            <MdPriceChange className='text-xl' /> Toplam Maliyet
+            <IoMdAddCircle className='text-xl' /> Ödeme Ekle
           </button>
         </div>
       </div>

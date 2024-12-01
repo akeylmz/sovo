@@ -61,8 +61,10 @@ import { IoChevronForward } from 'react-icons/io5'
 import { IoChevronBackOutline } from 'react-icons/io5'
 import { IoCalculator } from 'react-icons/io5'
 import { BiSolidBadgeDollar } from 'react-icons/bi'
+import { MdAddBox } from 'react-icons/md'
 
 export {
+  MdAddBox,
   BiSolidBadgeDollar,
   IoCalculator,
   IoChevronForward,

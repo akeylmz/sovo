@@ -86,7 +86,7 @@ const CustomTable = ({
   )
 
   return (
-    <div className='container mx-auto px-6 py-8 shadow-lg rounded-xl bg-white'>
+    <div className='px-6 py-8 shadow-lg rounded-xl bg-white'>
       {title && <p className='ps-1 pb-5 font-bold text-lg text-soento-green'>{title}</p>}
 
       {/* Search Input */}

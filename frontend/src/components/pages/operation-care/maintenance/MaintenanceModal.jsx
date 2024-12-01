@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine, IoMdAddCircle } from '../../../../styles/icons'
+import { IoClose, BiSolidEdit, RiFunctionAddLine, MdAddBox } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { operationCareValidation } from '../../../../utils/validationSchemas'
@@ -87,14 +87,13 @@ function MaintenanceModal({ initialData, onSubmit, onClose }) {
             <Form>
               <div className='modal-body three-column'>
                 <div className='field-group'>
-                  <label className='field-title'>
-                    <div className='flex gap-2 items-center'>
-                      <p>Santral Adı</p>
-                      <button type='button' onClick={() => setShowPowerPlantModal(true)}>
-                        <IoMdAddCircle className='text-soento-green text-xl' />
-                      </button>
-                    </div>
-                  </label>
+                  <div className='flex gap-2 items-center'>
+                    <label className='field-title'>Santral Adı</label>
+                    <button type='button' onClick={() => setShowPowerPlantModal(true)}>
+                      <MdAddBox className='text-soento-green text-xl' />
+                    </button>
+                  </div>
+
                   <Field name='Operation_Care_Company'>
                     {({ field, form }) => (
                       <CustomSelect
