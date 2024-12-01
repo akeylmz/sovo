@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { motion } from 'framer-motion'
 import { useDispatch } from 'react-redux'
-// import { addClient } from '../../../../store/slices/clientSlice'
-import { salesProcessValidation } from '../../../../utils/validationSchemas'
+import { addPersonRelated } from '../../../../store/slices/salesOfferSlice'
+import { relatedPersonValidation } from '../../../../utils/validationSchemas'
 
 function AddPersonDealModal({ onClose }) {
   const dispatch = useDispatch()
@@ -32,11 +32,11 @@ function AddPersonDealModal({ onClose }) {
 
         <Formik
           initialValues={{
-            xxxxxxxxxxxxxxx: '',
+            PersonRelatedName: '',
           }}
-          validationSchema={salesProcessValidation}
+          validationSchema={relatedPersonValidation}
           onSubmit={(values) => {
-            // dispatch(addClient(values))
+            dispatch(addPersonRelated(values))
             onClose()
           }}
         >
@@ -46,21 +46,17 @@ function AddPersonDealModal({ onClose }) {
                 <div className='field-group'>
                   <label className='field-title'>İlgilenen Kişi Adı</label>
                   <Field
-                    name='xxxxxxxxxxxxxxx'
+                    name='PersonRelatedName'
                     type='text'
                     className='field-control'
                     placeholder='İlgilenen kişi adı giriniz'
                   />
-                  <ErrorMessage name='xxxxxxxxxxxxxxx' component='div' className='field-error-message' />
+                  <ErrorMessage name='PersonRelatedName' component='div' className='field-error-message' />
                 </div>
               </div>
               <div className='modal-footer'>
-                {/* <button type='submit' className='submit-button'>
+                <button type='submit' className='submit-button'>
                   Ekle
-                </button> */}
-
-                <button type='submit' className='submit-button !bg-gray-800' disabled>
-                  (Geliştirme aşamasında)
                 </button>
               </div>
             </Form>

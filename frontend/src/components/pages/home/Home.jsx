@@ -33,25 +33,18 @@ function Home() {
 
   return (
     <>
-      <div className='flex flex-col gap-7 size-full'>
-        <div className='flex flex-col xl:flex-row gap-7'>
-          <div className='p-5 xl:w-[60%] h-[45vh] rounded-xl shadow-xl bg-white'>
-            <CashFlow data={projects} />
-          </div>
-
-          <div className='xl:w-[40%] h-[45vh] rounded-xl shadow-xl bg-[#2f9590]'>
-            <IncomeExpense data={projects} />
-          </div>
+      <div className='grid grid-cols-1 xl:grid-cols-10 xl:h-[100vh] gap-5'>
+        <div className='xl:col-span-6 h-[400px] xl:h-[calc(50vh-28px)] rounded-xl shadow-xl p-5 bg-white'>
+          <CashFlow data={projects} />
         </div>
-
-        <div className='flex flex-col xl:flex-row gap-7'>
-          <div className='p-5 xl:w-[30%] h-[45vh] rounded-xl shadow-xl bg-white'>
-            <TotalExpenses data={projects} />
-          </div>
-
-          <div className='p-5 xl:w-[70%] h-[45vh] rounded-xl shadow-xl bg-white'>
-            <ProfitLoss data={projects} />
-          </div>
+        <div className='xl:col-span-4 h-[400px] xl:h-[calc(50vh-28px)] rounded-xl shadow-xl bg-[#2f9590]'>
+          <IncomeExpense data={projects} />
+        </div>
+        <div className='xl:col-span-3 h-[400px] xl:h-[calc(50vh-28px)] rounded-xl shadow-xl p-5 bg-white'>
+          <TotalExpenses data={projects} />
+        </div>
+        <div className='xl:col-span-7 h-[400px] xl:h-[calc(50vh-28px)] rounded-xl shadow-xl p-5 bg-white'>
+          <ProfitLoss data={projects} />
         </div>
       </div>
 

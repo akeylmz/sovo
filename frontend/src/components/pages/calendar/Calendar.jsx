@@ -54,7 +54,7 @@ function Calendar() {
           <div className='rounded-full p-2 bg-soento-green text-soento-white'>
             <IoCalendarNumberOutline className='text-2xl' />
           </div>
-          <p className='font-bold text-soento-green'>Takvim</p>
+          <p className='font-bold text-soento-green'>Takvim (Demo)</p>
         </div>
         <div className='flex items-center gap-1 rounded-full p-1 bg-soento-green'>
           <button className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'>

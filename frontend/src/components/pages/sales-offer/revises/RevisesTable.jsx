@@ -1,17 +1,32 @@
 import CustomTable from '../../../custom/CustomTable'
 import { formatDateTime, formatNumber } from '../../../../utils/valueFormatters'
 
+// İlgilenen kişi adını getirmek için
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchPersonRelateds } from '../../../../store/slices/salesOfferSlice'
+
 function RevisesTable({ data, handleReviseDetail }) {
   // Key değerlerinde başında 'x' olan alanlar formatlanmış veya yeni eklenmiş
   // alanları ifade etmektedir. Örnek olarak orijinal verideki bir tarih alanı
   // 2024-01-01 şeklinde gelmektedir. Bu veri formatlanarak 1 Ocak 2024 haline
   // dönüştürüldüğünde karışıklık olmaması için başarına bu ifade konmuştur.
 
+  // ---- İlgilenen kişi adını getirmek için ----
+  const dispatch = useDispatch()
+  const { personRelateds } = useSelector((state) => state.salesOffer)
+  useEffect(() => {
+    if (!personRelateds || personRelateds.length === 0) {
+      dispatch(fetchPersonRelateds())
+    }
+  }, [dispatch, personRelateds])
+  // --------------------------------------------
+
   const columns = [
     { key: 'Situation_Card', title: 'DURUM' },
     { key: 'x_Client_Name', title: 'MÜŞTERİ ADI' },
     { key: 'Location_Card', title: 'KONUM' },
-    { key: 'Person_Deal', title: 'İLGİLENEN KİŞİ' },
+    { key: 'x_SalesPersonRelated', title: 'İLGİLENEN KİŞİ' },
     { key: 'x_AC_Power_Card', title: 'AC GÜÇ' },
     { key: 'x_DC_Power_Card', title: 'DC GÜÇ' },
     { key: 'x_UnitCost_NotIncludingKDV', title: 'BİRİM MALİYET' },
@@ -31,6 +46,7 @@ function RevisesTable({ data, handleReviseDetail }) {
   const newData = sortedData.map((item) => ({
     ...item,
     x_Client_Name: item.client.CompanyName_Clients,
+    x_SalesPersonRelated: personRelateds.find((sales) => sales.id == item.SalesPersonRelated)?.PersonRelatedName,
     x_AC_Power_Card: formatNumber(item.AC_Power_Card) + ' kWe',
     x_DC_Power_Card: formatNumber(item.DC_Power_Card) + ' kWp',
     x_UnitCost_NotIncludingKDV: formatNumber(item.UnitCost_NotIncludingKDV) + '$',
@@ -50,6 +66,7 @@ function RevisesTable({ data, handleReviseDetail }) {
       ...data,
       id: -1,
       x_Client_Name: data.client.CompanyName_Clients,
+      x_SalesPersonRelated: personRelateds.find((sales) => sales.id == data.SalesPersonRelated)?.PersonRelatedName,
       x_AC_Power_Card: formatNumber(data.AC_Power_Card) + ' kWe',
       x_DC_Power_Card: formatNumber(data.DC_Power_Card) + ' kWp',
       x_UnitCost_NotIncludingKDV: formatNumber(data.UnitCost_NotIncludingKDV) + '$',

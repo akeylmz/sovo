@@ -4,6 +4,7 @@
 __pycache__/
 
 # Sanal ortam klasorleri
+akenv/
 myenv/
 venv/
 

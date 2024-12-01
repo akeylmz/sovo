@@ -27,7 +27,7 @@ function Stock() {
           <div className='rounded-full p-2 bg-soento-green text-soento-white'>
             <BiSave className='text-2xl' />
           </div>
-          <p className='font-bold text-soento-green'>Stok Durum</p>
+          <p className='font-bold text-soento-green'>Stok Durum (Demo)</p>
         </div>
         <div className='flex gap-2 rounded-full pl-5 pr-1.5 bg-soento-green'>
           <div className='nav-links flex gap-2'>

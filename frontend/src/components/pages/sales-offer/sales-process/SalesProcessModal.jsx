@@ -10,6 +10,7 @@ import CustomNumberInput from '../../../custom/CustomNumberInput'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClients } from '../../../../store/slices/clientSlice'
+import { fetchPersonRelateds } from '../../../../store/slices/salesOfferSlice'
 import { cities, terrainRoofList, offerSituationList } from '../../../../static/datas'
 import AddClientModal from '../../project/AddClientModal'
 import AddPersonDealModal from './AddPersonDealModal'
@@ -17,6 +18,7 @@ import AddPersonDealModal from './AddPersonDealModal'
 function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const dispatch = useDispatch()
   const { clients } = useSelector((state) => state.client)
+  const { personRelateds } = useSelector((state) => state.salesOffer)
   const [showAddClientModal, setShowAddClientModal] = useState(false)
   const [showAddPersonDealModal, setShowAddPersonDealModal] = useState(false)
 
@@ -30,15 +32,15 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
     return { value: client.id, label: client.CompanyName_Clients }
   })
 
-  // useEffect(() => {
-  //   if (!clients || clients.length === 0) {
-  //     dispatch(fetchClients())
-  //   }
-  // }, [dispatch, clients])
+  useEffect(() => {
+    if (!personRelateds || personRelateds.length === 0) {
+      dispatch(fetchPersonRelateds())
+    }
+  }, [dispatch, personRelateds])
 
-  // const clientList = clients.map((client) => {
-  //   return { value: client.id, label: client.CompanyName_Clients }
-  // })
+  const personRelatedList = personRelateds.map((personRelated) => {
+    return { value: personRelated.id, label: personRelated.PersonRelatedName }
+  })
 
   return createPortal(
     <>
@@ -63,7 +65,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
         <Formik
           initialValues={{
             Client_Card: initialData?.Client_Card || '',
-            Person_Deal: initialData?.Person_Deal || '',
+            SalesPersonRelated: initialData?.SalesPersonRelated || '',
             Location_Card: initialData?.Location_Card || '',
             Offer_Cost_NotIncludingKDV_Card: initialData?.Offer_Cost_NotIncludingKDV_Card || '',
             UnitOffer_NotIncludingKDV: initialData?.UnitOffer_NotIncludingKDV || '',
@@ -74,7 +76,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
             Situation_Card: initialData?.Situation_Card || '',
             Comment_Card_1: initialData?.Comment_Card_1 || '',
             Date_Card: initialData?.Date_Card || '',
-            Person_Related: initialData?.Person_Related || '',
+            Person_Deal: initialData?.Person_Deal || '',
             Terrain_Roof_Card: initialData?.Terrain_Roof_Card || 'Arazi',
             Roof_Cost_Card: initialData?.Roof_Cost_Card || '',
           }}
@@ -116,13 +118,17 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
                     </button>
                   </div>
 
-                  <Field
-                    name='Person_Deal'
-                    type='text'
-                    className='field-control'
-                    placeholder='İlgilenen kişi giriniz'
-                  />
-                  <ErrorMessage name='Person_Deal' component='div' className='field-error-message' />
+                  <Field name='SalesPersonRelated'>
+                    {({ field, form }) => (
+                      <CustomSelect
+                        options={personRelatedList}
+                        field={field}
+                        form={form}
+                        placeholder='İlgilenen kişi seçiniz'
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage name='SalesPersonRelated' component='div' className='field-error-message' />
                 </div>
 
                 {/* ------------------- */}
@@ -288,13 +294,8 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
 
                 <div className='field-group'>
                   <label className='field-title'>İlgili Kişi</label>
-                  <Field
-                    name='Person_Related'
-                    type='text'
-                    className='field-control'
-                    placeholder='İlgili kişi giriniz'
-                  />
-                  <ErrorMessage name='Person_Related' component='div' className='field-error-message' />
+                  <Field name='Person_Deal' type='text' className='field-control' placeholder='İlgili kişi giriniz' />
+                  <ErrorMessage name='Person_Deal' component='div' className='field-error-message' />
                 </div>
 
                 <div className='field-group'>

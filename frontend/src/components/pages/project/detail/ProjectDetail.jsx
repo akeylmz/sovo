@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { fetchClients } from '../../../../store/slices/clientSlice'
-import { fetchProjects } from '../../../../store/slices/projectSlice'
+import { fetchSingleProject } from '../../../../store/slices/projectSlice'
 import { IoMdArrowRoundBack } from '../../../../styles/icons'
 import ErrorOccurred from '../../../custom/ErrorOccurred'
 import Loader from '../../../custom/Loader'
@@ -14,23 +14,20 @@ function ProjectDetail() {
   const navigate = useNavigate()
 
   const { id } = useParams()
-  const { projects, ...projectsProps } = useSelector((state) => state.project)
+  const { singleProject, ...projectsProps } = useSelector((state) => state.project)
   const { clients, ...clientsProps } = useSelector((state) => state.client)
 
   useEffect(() => {
-    if (projects.length === 0) {
-      dispatch(fetchProjects())
-    }
-  }, [dispatch, projects])
+    dispatch(fetchSingleProject(id)) // Sayfa yüklenirken tüm veriyi getir
+  }, [dispatch, id])
 
   useEffect(() => {
-    if (clients.length === 0) {
+    if (!clients || clients.length === 0) {
       dispatch(fetchClients())
     }
   }, [dispatch, clients])
 
-  const projectDetails = projects.find((project) => project.id == id)
-  const projectClient = projectDetails ? clients.find((client) => client.id == projectDetails.Company_id) : null
+  const projectClient = singleProject ? clients.find((client) => client.id == singleProject.Company_id) : null
 
   if (projectsProps.error) return <ErrorOccurred message={projectsProps.error} />
   if (clientsProps.error) return <ErrorOccurred message={clientsProps.error} />
@@ -52,16 +49,16 @@ function ProjectDetail() {
         <div className='flex items-center gap-3 rounded-full px-5 py-1 bg-soento-green text-soento-white'>
           <p>{projectClient.CompanyName_Clients}</p>
           <span>|</span>
-          <p>{projectDetails.CompanyUndertakingWork}</p>
+          <p>{singleProject.CompanyUndertakingWork}</p>
         </div>
       </div>
 
       <div className='flex flex-col md:flex-row gap-5'>
         <div className='order-2 md:order-1 size-full'>
-          <InfoField details={projectDetails} />
+          <InfoField details={singleProject} />
         </div>
         <div className='order-1 md:order-2 size-full md:min-h-[85vh] md:max-w-[300px]'>
-          <InfoPanel details={projectDetails} />
+          <InfoPanel details={singleProject} />
         </div>
       </div>
 

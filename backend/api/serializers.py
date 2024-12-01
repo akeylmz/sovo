@@ -264,7 +264,7 @@ class SalesOfferCardSerializer(serializers.ModelSerializer):
         instance.Terrain_Roof_Card = validated_data.get('Terrain_Roof_Card', instance.Terrain_Roof_Card)
         instance.Roof_Cost_Card = validated_data.get('Roof_Cost_Card', instance.Roof_Cost_Card)
         instance.Person_Deal = validated_data.get('Person_Deal', instance.Person_Deal)
-        instance.Person_Related = validated_data.get('Person_Related', instance.Person_Related)
+        instance.SalesPersonRelated = validated_data.get('SalesPersonRelated', instance.SalesPersonRelated)
         instance.Offer_File_Card = validated_data.get('Offer_File_Card', instance.Offer_File_Card)
         instance.Offer_File_Card_2 = validated_data.get('Offer_File_Card_2', instance.Offer_File_Card_2)
         instance.Offer_File_Card_3 = validated_data.get('Offer_File_Card_3', instance.Offer_File_Card_3)

@@ -74,7 +74,7 @@ export const projectExpenseValidation = Yup.object({
 
 export const salesProcessValidation = Yup.object({
   Client_Card: Yup.string().required('Bu alan zorunludur'),
-  Person_Deal: Yup.string().required('Bu alan zorunludur'),
+  SalesPersonRelated: Yup.string().required('Bu alan zorunludur'),
   Location_Card: Yup.string().required('Bu alan zorunludur'),
   Offer_Cost_NotIncludingKDV_Card: Yup.string(),
   UnitOffer_NotIncludingKDV: Yup.string(),
@@ -85,7 +85,7 @@ export const salesProcessValidation = Yup.object({
   Situation_Card: Yup.string().required('Bu alan zorunludur'),
   Comment_Card_1: Yup.string(),
   Date_Card: dateValidation,
-  Person_Related: Yup.string(),
+  Person_Deal: Yup.string(),
   Terrain_Roof_Card: Yup.string(),
   Roof_Cost_Card: Yup.string(),
 })
@@ -137,4 +137,8 @@ export const operationCareValidation = Yup.object({
 
 export const powerPlantValidation = Yup.object({
   PowerPlantName: Yup.string().required('Bu alan zorunludur'),
+})
+
+export const relatedPersonValidation = Yup.object({
+  PersonRelatedName: Yup.string().required('Bu alan zorunludur'),
 })

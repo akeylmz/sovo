@@ -46,10 +46,25 @@ export const addSalesOfferRevise = createAsyncThunk('salesOffer/addSalesOfferRev
   return response.data
 })
 
+// --------------------------------------------------------------------------------------------------------
+
+// Async action to fetch all data
+export const fetchPersonRelateds = createAsyncThunk('salesOffer/fetchPersonRelateds', async () => {
+  const response = await axiosInstance.get('/person-related')
+  return response.data
+})
+
+// Async action to add single data
+export const addPersonRelated = createAsyncThunk('salesOffer/addPersonRelated', async (data) => {
+  const response = await axiosInstance.post('/person-related/', data)
+  return response.data
+})
+
 const salesOfferSlice = createSlice({
   name: 'salesOffers',
   initialState: {
     salesOffers: [],
+    personRelateds: [],
     loading: false,
     error: null,
   },
@@ -122,6 +137,36 @@ const salesOfferSlice = createSlice({
         state.loading = false
       })
       .addCase(addSalesOfferRevise.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+
+      //---------------------------------------------------------------------
+
+      // Fetch All Data (for person related)
+
+      .addCase(fetchPersonRelateds.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(fetchPersonRelateds.fulfilled, (state, action) => {
+        state.personRelateds = action.payload
+        state.loading = false
+      })
+      .addCase(fetchPersonRelateds.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+
+      // Add Single Data (for person related)
+
+      .addCase(addPersonRelated.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(addPersonRelated.fulfilled, (state, action) => {
+        state.personRelateds = [action.payload, ...state.personRelateds]
+        state.loading = false
+      })
+      .addCase(addPersonRelated.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
       })
