@@ -7,11 +7,20 @@ import * as Yup from 'yup'
 import Loader from '../../../custom/Loader'
 import ErrorOccurred from '../../../custom/ErrorOccurred'
 import { useDispatch, useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
 import { updateSalesOfferWithFile } from '../../../../store/slices/salesOfferSlice'
 
 function CardFileModal({ initialData, fileColumn, onClose }) {
   const dispatch = useDispatch()
   const { loading, error } = useSelector((state) => state.salesOffer)
+
+  const [protocol, setProtocol] = useState('')
+
+  useEffect(() => {
+    // window.location.protocol, http: veya https: döner
+    const currentProtocol = window.location.protocol
+    setProtocol(currentProtocol)
+  }, [])
 
   if (error) return <ErrorOccurred message={error} />
 
@@ -46,20 +55,7 @@ function CardFileModal({ initialData, fileColumn, onClose }) {
               </div>
             </div>
             <div className='modal-footer'>
-              {/* <button
-                type='button'
-                className='submit-button'
-                onClick={() => {
-                  const link = initialData[fileColumn]
-                  if (link) {
-                    window.open(link, '_blank')
-                  }
-                }}
-              >
-                Görüntüle
-              </button> */}
-
-              <a href={`${initialData[fileColumn]}`} download>
+              <a href={`${initialData[fileColumn].replace('http:', protocol)}`} download>
                 <button type='button' className='submit-button' onClick={onClose}>
                   Dosya indir
                 </button>
