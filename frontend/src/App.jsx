@@ -39,6 +39,7 @@ import TrackBreakdown from './components/pages/operation-care/detail/track-break
 import TrackMaintenance from './components/pages/operation-care/detail/track-maintenance/TrackMaintenance'
 import ReportChart from './components/pages/report/ReportChart'
 import ReportTable from './components/pages/report/ReportTable'
+import IncomeExpense from './components/pages/report/income-expense/IncomeExpense'
 
 function App() {
   return (
@@ -214,6 +215,7 @@ function App() {
           <Route index element={<Navigate to='chart' />} />
           <Route path='chart' element={<ReportChart />} />
           <Route path='table' element={<ReportTable />} />
+          <Route path='income-expense' element={<IncomeExpense />} />
         </Route>
 
         {/* ---------------------------------------------------------------------------------- */}

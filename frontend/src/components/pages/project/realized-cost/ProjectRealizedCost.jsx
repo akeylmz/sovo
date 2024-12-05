@@ -16,6 +16,7 @@ import {
   MdPriceChange,
   IoChevronForward,
   IoChevronBackOutline,
+  FaFilterCircleXmark,
 } from '../../../../styles/icons'
 import {
   fetchSingleProject,
@@ -148,6 +149,35 @@ function ProjectRealizedCost() {
         amountJobHistory: totalJobHistory.amountJobHistory,
         amountUsdJobHistory: totalJobHistory.amountUsdJobHistory,
       })
+    } else {
+      // -------------------------------------------------------------------
+      if (singleProject) {
+        const totalExpenses = singleProject.project_expenses.reduce(
+          (acc, expense) => {
+            acc.amountExpenses += parseFloat(expense.Amount_Expenses)
+            acc.amountUsdExpenses += parseFloat(expense.Amount_USD_Expenses)
+            return acc
+          },
+          { amountExpenses: 0, amountUsdExpenses: 0 }
+        )
+
+        const totalJobHistory = singleProject.project_jobhistories.reduce(
+          (acc, jobHistory) => {
+            acc.amountJobHistory += parseFloat(jobHistory.Amount_JobHistory)
+            acc.amountUsdJobHistory += parseFloat(jobHistory.Amount_USD_JobHistory)
+            return acc
+          },
+          { amountJobHistory: 0, amountUsdJobHistory: 0 }
+        )
+
+        setTotals({
+          amountExpenses: totalExpenses.amountExpenses,
+          amountUsdExpenses: totalExpenses.amountUsdExpenses,
+          amountJobHistory: totalJobHistory.amountJobHistory,
+          amountUsdJobHistory: totalJobHistory.amountUsdJobHistory,
+        })
+      }
+      // -------------------------------------------------------------------
     }
   }, [selectedSupplierId, singleProject])
 
@@ -183,31 +213,31 @@ function ProjectRealizedCost() {
 
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
-            onClick={() => navigate(`/project/details/realized-cost-summary/${id}`)}
-          >
-            <MdPriceChange className='text-xl' /> Toplam Maliyet
-          </button>
-
-          <button
-            className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
             onClick={openModalForAddExpense}
           >
             <IoMdAddCircle className='text-xl' /> Ödeme Ekle
           </button>
+
+          <button
+            className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-gray-300 text-soento-green hover:bg-soento-white hover:text-soento-green'
+            onClick={() => navigate(`/project/details/realized-cost-summary/${id}`)}
+          >
+            <MdPriceChange className='text-xl' /> Toplam Maliyet
+          </button>
         </div>
       </div>
 
-      <div className='flex gap-2'>
-        <div className='flex flex-col w-[49%]'>
+      <div className='flex flex-col xl:flex-row gap-2'>
+        <div className='flex flex-col xl:w-[49%]'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4'>
             <InfoBox
               label='Gerçekleşen İş'
-              data={selectedSupplierId ? formatNumber(totals?.amountUsdJobHistory) : '0,00'}
+              data={formatNumber(totals?.amountUsdJobHistory || 0)}
               icon={<BiDollarCircle />}
             />
             <InfoBox
               label='Gerçekleşen İş'
-              data={selectedSupplierId ? formatNumber(totals?.amountJobHistory) : '0,00'}
+              data={formatNumber(totals?.amountJobHistory || 0)}
               icon={<TbCurrencyLira />}
             />
           </div>
@@ -218,24 +248,24 @@ function ProjectRealizedCost() {
                 ? singleProject.project_jobhistories.filter(
                     (jobHistory) => jobHistory.supplier_jobhistories.id === selectedSupplierId
                   )
-                : []
+                : singleProject?.project_jobhistories || []
             }
             handleEdit={openModalForEditJobHistory}
           />
         </div>
 
-        <div className='w-[2px] h-full rounded-full bg-soento-green'></div>
+        <div className='hidden xl:block w-[2px] h-full rounded-full bg-soento-green'></div>
 
-        <div className='flex flex-col w-[49%]'>
+        <div className='flex flex-col xl:w-[49%]'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4'>
             <InfoBox
               label='Gerçekleşen Ödeme'
-              data={selectedSupplierId ? formatNumber(totals?.amountUsdExpenses) : '0,00'}
+              data={formatNumber(totals?.amountUsdExpenses || 0)}
               icon={<BiDollarCircle />}
             />
             <InfoBox
               label='Gerçekleşen Ödeme'
-              data={selectedSupplierId ? formatNumber(totals?.amountExpenses) : '0,00'}
+              data={formatNumber(totals?.amountExpenses || 0)}
               icon={<TbCurrencyLira />}
             />
           </div>
@@ -246,33 +276,42 @@ function ProjectRealizedCost() {
                 ? singleProject.project_expenses.filter(
                     (expense) => expense.supplier_expenses.id === selectedSupplierId
                   )
-                : []
+                : singleProject?.project_expenses || []
             }
             handleEdit={openModalForEditExpense}
           />
         </div>
       </div>
 
-      <div className='flex flex-col items-center rounded-xl shadow-lg pt-3 pb-2 mt-4 text-white bg-soento-green'>
+      <div className='flex flex-col items-center rounded-xl shadow-lg py-2 mt-4 text-white bg-soento-green'>
         <span className='font-semibold text-xs'>KALAN ÖDEME</span>
-        <div className='flex gap-4'>
-          <span className='font-semibold text-lg'>
-            {totals ? formatNumber(totals.amountUsdJobHistory - totals.amountUsdExpenses) : '0,00'}$
+        <div className='grid grid-cols-2 mt-1 size-full'>
+          <span className='font-semibold text-lg border-r px-3 ms-auto'>
+            {totals ? formatNumber(totals.amountJobHistory - totals.amountExpenses) : '0,00'} ₺
           </span>
-          <span className='font-semibold text-lg'>
-            {totals ? formatNumber(totals.amountJobHistory - totals.amountExpenses) : '0,00'}₺
+          <span className='font-semibold text-lg border-l px-3'>
+            {totals ? formatNumber(totals.amountUsdJobHistory - totals.amountUsdExpenses) : '0,00'} $
           </span>
         </div>
       </div>
 
+      {/* Açılır menü */}
       <div className='fixed top-1/2 transform -translate-y-1/2 flex items-center -ms-5'>
         {showMenu && (
           <div
             className='flex flex-col gap-4 rounded-r-xl w-52 h-80 p-6 shadow-lg  overflow-y-scroll no-scrollbar bg-gradient-to-r from-[#085653] via-[#085653] to-[#0b7a76]'
             ref={menuRef}
           >
-            <span className='text-white font-semibold text-sm tracking-wider mb-2'>Tedarikçi Listesi</span>
-            <ul className='relative border-l border-[#07908b]'>
+            <div className='flex justify-between items-center'>
+              <span className='text-white font-semibold text-sm tracking-wider'>Tedarikçi Listesi</span>
+              {selectedSupplierId && (
+                <button className='text-white' onClick={() => setSelectedSupplierId(null)}>
+                  <FaFilterCircleXmark className='text-xl' />
+                </button>
+              )}
+            </div>
+
+            <ul className='relative border-l mt-1 border-[#07908b]'>
               {suppliers.map((supplier) => (
                 <li key={supplier.id} className='mb-3 ml-4 relative'>
                   <span className='absolute w-4 h-4 bg-[#07908b] rounded-full -left-6 top-1/2 transform -translate-y-1/2'></span>
@@ -292,11 +331,11 @@ function ProjectRealizedCost() {
 
             {/* Açılır menü kenarları */}
             <div
-              className='absolute -top-10 left-0 size-10 bg-transparent rounded-bl-[50%]'
+              className='absolute -top-10 left-0 size-10 bg-transparent rounded-bl-[50%] -z-10'
               style={{ boxShadow: '0 20px 0 0 #085653' }}
             ></div>
             <div
-              className='absolute -bottom-10 left-0 size-10 bg-transparent rounded-tl-[50%]'
+              className='absolute -bottom-10 left-0 size-10 bg-transparent rounded-tl-[50%] -z-10'
               style={{ boxShadow: '0 -20px 0 0 #085653' }}
             ></div>
           </div>

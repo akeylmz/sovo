@@ -73,6 +73,7 @@ function Report() {
   const subLinks = [
     { path: 'chart', label: 'Grafik Görünümü' },
     { path: 'table', label: 'Tablo Görünümü' },
+    { path: 'income-expense', label: 'Toplam Gelir Gider' },
   ]
 
   if (error) return <ErrorOccurred message={error} />

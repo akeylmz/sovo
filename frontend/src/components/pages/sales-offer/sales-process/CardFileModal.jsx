@@ -1,5 +1,5 @@
 import '../../../../styles/Modal.css'
-import { IoClose, FaRegFileAlt } from '../../../../styles/icons'
+import { IoClose, FaRegFileAlt, CgSpinner, RxOpenInNewWindow } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { motion } from 'framer-motion'
@@ -15,12 +15,39 @@ function CardFileModal({ initialData, fileColumn, onClose }) {
   const { loading, error } = useSelector((state) => state.salesOffer)
 
   const [protocol, setProtocol] = useState('')
+  const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
-    // window.location.protocol, http: veya https: döner
-    const currentProtocol = window.location.protocol
+    const currentProtocol = window.location.protocol // http: veya https: döner
     setProtocol(currentProtocol)
   }, [])
+
+  const handleDownload = async (fileUrl) => {
+    // İndirme işlemine başlandığında loading'i true yapıyoruz
+    setDownloading(true)
+
+    try {
+      const response = await fetch(fileUrl)
+      if (!response.ok) {
+        throw new Error('Dosya indirilemedi.')
+      }
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+
+      const link = document.createElement('a')
+      link.href = url
+      link.download = fileUrl.split('/').pop()
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Hata:', error)
+    } finally {
+      setDownloading(false)
+      onClose()
+    }
+  }
 
   if (error) return <ErrorOccurred message={error} />
 
@@ -55,11 +82,22 @@ function CardFileModal({ initialData, fileColumn, onClose }) {
               </div>
             </div>
             <div className='modal-footer'>
-              <a href={`${initialData[fileColumn].replace('http:', protocol)}`} download>
-                <button type='button' className='submit-button' onClick={onClose}>
-                  Dosya indir
+              <div className='flex gap-1'>
+                <button
+                  type='button'
+                  className='submit-button flex justify-center items-center'
+                  disabled={downloading}
+                  onClick={() => handleDownload(initialData[fileColumn].replace('http:', protocol))}
+                >
+                  {downloading ? <CgSpinner className='text-3xl animate-spin' /> : 'İndir'}
                 </button>
-              </a>
+
+                <a href={`${initialData[fileColumn].replace('http:', protocol)}`} target='_blank' download>
+                  <button type='button' className='submit-button h-full' onClick={onClose}>
+                    <RxOpenInNewWindow className='text-2xl' />
+                  </button>
+                </a>
+              </div>
             </div>
           </>
         ) : (
@@ -99,7 +137,7 @@ function CardFileModal({ initialData, fileColumn, onClose }) {
                   </div>
                 </div>
                 <div className='modal-footer'>
-                  <button type='submit' className='submit-button'>
+                  <button type='submit' className='submit-button '>
                     Yükle
                   </button>
                 </div>

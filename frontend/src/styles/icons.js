@@ -62,8 +62,14 @@ import { IoChevronBackOutline } from 'react-icons/io5'
 import { IoCalculator } from 'react-icons/io5'
 import { BiSolidBadgeDollar } from 'react-icons/bi'
 import { MdAddBox } from 'react-icons/md'
+import { FaFilterCircleXmark } from 'react-icons/fa6'
+import { RiExchange2Fill } from 'react-icons/ri'
+import { RxOpenInNewWindow } from 'react-icons/rx'
 
 export {
+  RxOpenInNewWindow,
+  RiExchange2Fill,
+  FaFilterCircleXmark,
   MdAddBox,
   BiSolidBadgeDollar,
   IoCalculator,

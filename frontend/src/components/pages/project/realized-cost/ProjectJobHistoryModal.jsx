@@ -1,5 +1,4 @@
 import '../../../../styles/Modal.css'
-import { IoClose, BiSolidEdit, RiFunctionAddLine, BiSolidBadgeDollar, MdAddBox } from '../../../../styles/icons'
 import { createPortal } from 'react-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { projectJobHistoryValidation } from '../../../../utils/validationSchemas'
@@ -14,12 +13,22 @@ import { useParams } from 'react-router-dom'
 import { exchangeRateTimeList, typeOfJobList } from '../../../../static/datas'
 import { getDollarRate } from '../../../../utils/functions'
 import AddSupplierModal from './AddSupplierModal'
+import {
+  IoClose,
+  BiSolidEdit,
+  RiFunctionAddLine,
+  BiSolidBadgeDollar,
+  MdAddBox,
+  RiExchange2Fill,
+} from '../../../../styles/icons'
 
 function ProjectJobHistoryModal({ initialData, onSubmit, onClose }) {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { suppliers } = useSelector((state) => state.supplier)
   const [showAddSupplierModal, setShowAddSupplierModal] = useState(false)
+
+  const [selectedTry, setSelectedTry] = useState(true)
 
   useEffect(() => {
     if (!suppliers || suppliers.length === 0) {
@@ -30,6 +39,28 @@ function ProjectJobHistoryModal({ initialData, onSubmit, onClose }) {
   const supplierList = suppliers.map((supplier) => {
     return { value: supplier.id, label: supplier.CompanyName_Supplier }
   })
+
+  const calculatedAmounts = async (values) => {
+    const today = new Date()
+    const formattedDate = today.toLocaleDateString('en-CA')
+    const response = await getDollarRate(formattedDate, 'before')
+
+    if (response.status) {
+      return {
+        ...values,
+        Date_JobHistory: formattedDate,
+        Dollar_Rate_JobHistory: response.data,
+        Amount_JobHistory: parseFloat((values.Amount_JobHistory * response.data).toFixed(4)),
+      }
+    } else {
+      return {
+        ...values,
+        Date_JobHistory: null,
+        Dollar_Rate_JobHistory: null,
+        Amount_JobHistory: null,
+      }
+    }
+  }
 
   return createPortal(
     <>
@@ -62,12 +93,22 @@ function ProjectJobHistoryModal({ initialData, onSubmit, onClose }) {
             Invoice_No_JobHistory: initialData?.Invoice_No_JobHistory || '',
           }}
           validationSchema={projectJobHistoryValidation}
-          onSubmit={(values) => {
-            const transformedValues = Object.fromEntries(
-              Object.entries(values).map(([key, value]) => [key, value === '' ? null : value])
-            )
-            onSubmit(transformedValues)
-            onClose()
+          onSubmit={async (values) => {
+            if (selectedTry) {
+              const transformedValues = Object.fromEntries(
+                Object.entries(values).map(([key, value]) => [key, value === '' ? null : value])
+              )
+              onSubmit(transformedValues)
+              onClose()
+            } else {
+              const newValues = await calculatedAmounts(values)
+
+              const transformedValues = Object.fromEntries(
+                Object.entries(newValues).map(([key, value]) => [key, value === '' ? null : value])
+              )
+              onSubmit(transformedValues)
+              onClose()
+            }
           }}
         >
           {({ values, errors, setFieldValue, setFieldError }) => (
@@ -99,63 +140,72 @@ function ProjectJobHistoryModal({ initialData, onSubmit, onClose }) {
                 </div>
 
                 <div className='field-group'>
-                  <label className='field-title'>Tutar (₺)</label>
+                  <div className='flex gap-3'>
+                    <label className='field-title'>Tutar ({selectedTry ? '₺' : '$'})</label>
+                    <button type='button' onClick={() => setSelectedTry((prev) => !prev)}>
+                      <RiExchange2Fill className='font-bold text-lg text-soento-green' />
+                    </button>
+                  </div>
                   <Field name='Amount_JobHistory'>
                     {({ field, form }) => <CustomNumberInput field={field} form={form} />}
                   </Field>
                   <ErrorMessage name='Amount_JobHistory' component='div' className='field-error-message' />
                 </div>
 
-                <div className='field-group'>
-                  <label className='field-title'>Tarih</label>
-                  <Field name='Date_JobHistory'>
-                    {({ field, form }) => <CustomDateInput field={field} form={form} />}
-                  </Field>
-                  <ErrorMessage name='Date_JobHistory' component='div' className='field-error-message' />
-                </div>
+                {selectedTry && (
+                  <>
+                    <div className='field-group'>
+                      <label className='field-title'>Tarih</label>
+                      <Field name='Date_JobHistory'>
+                        {({ field, form }) => <CustomDateInput field={field} form={form} />}
+                      </Field>
+                      <ErrorMessage name='Date_JobHistory' component='div' className='field-error-message' />
+                    </div>
 
-                <div className='field-group'>
-                  <label className='field-title'>Kur Saati</label>
-                  <Field name='chosen'>
-                    {({ field, form }) => (
-                      <CustomSelect
-                        options={exchangeRateTimeList}
-                        field={field}
-                        form={form}
-                        placeholder='Kur saati seçiniz'
-                      />
-                    )}
-                  </Field>
-                  <ErrorMessage name='chosen' component='div' className='field-error-message' />
-                </div>
+                    <div className='field-group'>
+                      <label className='field-title'>Kur Saati</label>
+                      <Field name='chosen'>
+                        {({ field, form }) => (
+                          <CustomSelect
+                            options={exchangeRateTimeList}
+                            field={field}
+                            form={form}
+                            placeholder='Kur saati seçiniz'
+                          />
+                        )}
+                      </Field>
+                      <ErrorMessage name='chosen' component='div' className='field-error-message' />
+                    </div>
 
-                <div className='field-group'>
-                  <label className='field-title'>Dolar Kuru (₺)</label>
-                  <div className='relative'>
-                    <Field name='Dollar_Rate_JobHistory'>
-                      {({ field, form }) => <CustomNumberInput field={field} form={form} decimalScale={4} />}
-                    </Field>
-                    <button
-                      type='button'
-                      onClick={async () => {
-                        const response = await getDollarRate(values.Date_JobHistory, values.chosen)
+                    <div className='field-group'>
+                      <label className='field-title'>Dolar Kuru (₺)</label>
+                      <div className='relative'>
+                        <Field name='Dollar_Rate_JobHistory'>
+                          {({ field, form }) => <CustomNumberInput field={field} form={form} decimalScale={4} />}
+                        </Field>
+                        <button
+                          type='button'
+                          onClick={async () => {
+                            const response = await getDollarRate(values.Date_JobHistory, values.chosen)
 
-                        if (response.status) {
-                          setFieldValue('Dollar_Rate_JobHistory', response.data)
-                        } else {
-                          setFieldError('Dollar_Rate_JobHistory', response.message)
-                        }
-                      }}
-                      className='flex items-center absolute px-2 top-0 bottom-0 right-0 text-2xl text-slate-500'
-                    >
-                      <BiSolidBadgeDollar />
-                    </button>
-                  </div>
+                            if (response.status) {
+                              setFieldValue('Dollar_Rate_JobHistory', response.data)
+                            } else {
+                              setFieldError('Dollar_Rate_JobHistory', response.message)
+                            }
+                          }}
+                          className='flex items-center absolute px-2 top-0 bottom-0 right-0 text-2xl text-slate-500'
+                        >
+                          <BiSolidBadgeDollar />
+                        </button>
+                      </div>
 
-                  {errors.Dollar_Rate_JobHistory && (
-                    <div className='field-error-message'>{errors.Dollar_Rate_JobHistory}</div>
-                  )}
-                </div>
+                      {errors.Dollar_Rate_JobHistory && (
+                        <div className='field-error-message'>{errors.Dollar_Rate_JobHistory}</div>
+                      )}
+                    </div>
+                  </>
+                )}
 
                 <div className='field-group'>
                   <label className='field-title'>Fatura Numarası</label>

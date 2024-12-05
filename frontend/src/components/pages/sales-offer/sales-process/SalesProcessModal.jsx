@@ -12,25 +12,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchClients } from '../../../../store/slices/clientSlice'
 import { fetchPersonRelateds } from '../../../../store/slices/salesOfferSlice'
 import { cities, terrainRoofList, offerSituationList } from '../../../../static/datas'
-import AddClientModal from '../../project/AddClientModal'
 import AddPersonDealModal from './AddPersonDealModal'
+// import AddClientModal from '../../project/AddClientModal'
 
 function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const dispatch = useDispatch()
   const { clients } = useSelector((state) => state.client)
   const { personRelateds } = useSelector((state) => state.salesOffer)
-  const [showAddClientModal, setShowAddClientModal] = useState(false)
   const [showAddPersonDealModal, setShowAddPersonDealModal] = useState(false)
+  const [clientName, setClientName] = useState(null)
+  // const [showAddClientModal, setShowAddClientModal] = useState(false)
 
   useEffect(() => {
-    if (!clients || clients.length === 0) {
-      dispatch(fetchClients())
-    }
-  }, [dispatch, clients])
+    dispatch(fetchClients())
+  }, [dispatch])
 
-  const clientList = clients.map((client) => {
-    return { value: client.id, label: client.CompanyName_Clients }
-  })
+  useEffect(() => {
+    if (initialData?.Client_Card) {
+      const client = clients.find((item) => item.id === initialData?.Client_Card)
+      setClientName(client?.CompanyName_Clients)
+    }
+  }, [clients, initialData?.Client_Card])
 
   useEffect(() => {
     if (!personRelateds || personRelateds.length === 0) {
@@ -41,6 +43,8 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
   const personRelatedList = personRelateds.map((personRelated) => {
     return { value: personRelated.id, label: personRelated.PersonRelatedName }
   })
+
+  if (!clientName && initialData) return
 
   return createPortal(
     <>
@@ -64,7 +68,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
 
         <Formik
           initialValues={{
-            Client_Card: initialData?.Client_Card || '',
+            Client_Card: clientName || '',
             SalesPersonRelated: initialData?.SalesPersonRelated || '',
             Location_Card: initialData?.Location_Card || '',
             Offer_Cost_NotIncludingKDV_Card: initialData?.Offer_Cost_NotIncludingKDV_Card || '',
@@ -92,7 +96,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
           {({ values, setFieldValue }) => (
             <Form>
               <div className='modal-body three-column'>
-                <div className='field-group'>
+                {/* <div className='field-group'>
                   <div className='flex gap-2 items-center'>
                     <label className='field-title'>Firma Adı</label>
                     <button type='button' onClick={() => setShowAddClientModal(true)}>
@@ -106,9 +110,19 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
                     )}
                   </Field>
                   <ErrorMessage name='Client_Card' component='div' className='field-error-message' />
-                </div>
+                </div> */}
 
-                {/* ------------------- */}
+                <div className='field-group'>
+                  <label className='field-title'>Firma adı</label>
+                  <Field
+                    name='Client_Card'
+                    type='text'
+                    className='field-control'
+                    placeholder='Firma adı giriniz'
+                    readOnly={initialData?.Client_Card}
+                  />
+                  <ErrorMessage name='Client_Card' component='div' className='field-error-message' />
+                </div>
 
                 <div className='field-group'>
                   <div className='flex gap-2 items-center'>
@@ -130,8 +144,6 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
                   </Field>
                   <ErrorMessage name='SalesPersonRelated' component='div' className='field-error-message' />
                 </div>
-
-                {/* ------------------- */}
 
                 <div className='field-group'>
                   <label className='field-title'>Konum</label>
@@ -335,7 +347,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
         </Formik>
       </div>
 
-      {showAddClientModal && <AddClientModal onClose={() => setShowAddClientModal(false)} />}
+      {/* {showAddClientModal && <AddClientModal onClose={() => setShowAddClientModal(false)} />} */}
 
       {showAddPersonDealModal && <AddPersonDealModal onClose={() => setShowAddPersonDealModal(false)} />}
     </>,

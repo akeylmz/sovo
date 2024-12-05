@@ -8,16 +8,18 @@ function ProjectJobHistoryTable({ data, handleEdit }) {
   // dönüştürüldüğünde karışıklık olmaması için başarına bu ifade konmuştur.
 
   const columns = [
-    { key: 'x_Date_JobHistory', title: 'TARİH' },
-    { key: 'Invoice_No_JobHistory', title: 'FATURA NO' },
-    { key: 'ExpensDetails_JobHistory', title: 'CİNSİ' },
+    { key: 'x_Supplier', title: 'FİRMA' },
     { key: 'x_Amount_JobHistory', title: 'TUTAR(TL)' },
     { key: 'x_Dollar_Rate_JobHistory', title: 'KUR' },
     { key: 'x_Amount_USD_JobHistory', title: 'TUTAR(USD)' },
+    { key: 'ExpensDetails_JobHistory', title: 'CİNSİ' },
+    { key: 'Invoice_No_JobHistory', title: 'FATURA NO' },
+    { key: 'x_Date_JobHistory', title: 'TARİH' },
   ]
 
   const newData = data.map((item) => ({
     ...item,
+    x_Supplier: item.supplier_jobhistories.CompanyName_Supplier,
     x_Date_JobHistory: formatDate(item.Date_JobHistory),
     x_Amount_JobHistory: formatNumber(item.Amount_JobHistory) + '₺',
     x_Dollar_Rate_JobHistory: formatNumberFourFractionDigit(item.Dollar_Rate_JobHistory) + '₺',

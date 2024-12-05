@@ -14,6 +14,8 @@ import {
   addSalesOfferRevise,
 } from '../../../../store/slices/salesOfferSlice'
 
+import { addClient } from '../../../../store/slices/clientSlice'
+
 const categories = [
   'Potansiyel Müşteri',
   'Maliyet Hesaplama',
@@ -51,15 +53,18 @@ function SalesProcess() {
   }
 
   // For add, update, revise modals
-  const handleSubmit = (salesOffer) => {
+  const handleSubmit = async (salesOffer) => {
     if (isRevise) {
-      dispatch(addSalesOfferRevise({ Revise_Owner: currentData.id, ...currentData }))
+      dispatch(
+        addSalesOfferRevise({ Revise_Owner: currentData.id, ...currentData, Client_Card: currentData.Client_Card })
+      )
     }
 
     if (currentData) {
-      dispatch(updateSalesOffer({ id: currentData.id, ...salesOffer }))
+      dispatch(updateSalesOffer({ id: currentData.id, ...salesOffer, Client_Card: currentData.Client_Card }))
     } else {
-      dispatch(addSalesOffer(salesOffer))
+      var newClient = await dispatch(addClient({ CompanyName_Clients: salesOffer.Client_Card }))
+      dispatch(addSalesOffer({ ...salesOffer, Client_Card: newClient.payload.id }))
     }
   }
 

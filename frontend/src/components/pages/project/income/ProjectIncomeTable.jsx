@@ -9,11 +9,11 @@ function ProjectIncomeTable({ data, handleEdit }) {
 
   const columns = [
     { key: 'x_CompanyName_Pay_Incomes', title: 'ÖDEME YAPAN FİRMA' },
-    { key: 'CompanyName_ReceivePayment_Incomes', title: 'ALICI FİRMA' },
-    { key: 'PaymentType_Incomes', title: 'ÖDEME TÜRÜ' },
     { key: 'x_Amount_Incomes', title: 'TUTAR (TL)' },
     { key: 'x_Dollar_Rate_Incomes', title: 'KUR' },
     { key: 'x_Amount_Usd_Incomes', title: 'TUTAR (USD)' },
+    { key: 'CompanyName_ReceivePayment_Incomes', title: 'ALICI FİRMA' },
+    { key: 'PaymentType_Incomes', title: 'ÖDEME TÜRÜ' },
     { key: 'x_ChekDate_Incomes', title: 'TARİH' },
   ]
 

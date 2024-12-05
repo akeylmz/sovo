@@ -1,4 +1,4 @@
-import { RiLightbulbFlashLine, FaArrowDown, FaArrowUp, FaBusinessTime, PiFlagBannerFill } from '../../../styles/icons'
+import { RiLightbulbFlashLine, PiFlagBannerFill } from '../../../styles/icons'
 import Loader from '../../custom/Loader'
 import ProjectModal from './ProjectModal'
 import ProjectTable from './ProjectTable'
@@ -48,15 +48,6 @@ function Project() {
           <p className='font-bold text-soento-green'>Projeler</p>
         </div>
         <div className='flex items-center gap-1 rounded-full p-1 bg-soento-green'>
-          {/* <button className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'>
-            <FaArrowDown className='text-lg' /> Gelir Ekle
-          </button>
-          <button className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'>
-            <FaArrowUp className='text-lg' /> Gider Ekle
-          </button>
-          <button className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'>
-            <FaBusinessTime className='text-lg' /> Yapılan İş
-          </button> */}
           <button
             className='flex gap-1.5 items-center rounded-full px-2 py-1 bg-soento-green text-soento-white hover:bg-soento-white hover:text-soento-green'
             onClick={openModalForAdd}

@@ -32,7 +32,7 @@ function ProjectDetail() {
   if (projectsProps.error) return <ErrorOccurred message={projectsProps.error} />
   if (clientsProps.error) return <ErrorOccurred message={clientsProps.error} />
 
-  if (!projectClient) return
+  if (!projectClient || projectsProps.loading) return
 
   return (
     <>
