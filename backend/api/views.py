@@ -216,6 +216,21 @@ class EventsDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+from .models import Calendar
+from .serializers import CalendarSerializer
+
+class CalendarListCreateView(generics.ListCreateAPIView):
+    queryset = Calendar.objects.all()
+    serializer_class = CalendarSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+class CalendarRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Calendar.objects.all()
+    serializer_class = CalendarSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
 def get_dollar_rate(request, date):
     headers={'key':'qYyWXNCbA0'}
     response = requests.get(f"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S&startDate={date}&endDate={date}&type=json", headers=headers)

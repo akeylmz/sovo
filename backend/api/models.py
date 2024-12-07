@@ -529,4 +529,18 @@ class Events(models.Model):
     Event_Title= models.CharField( max_length=63,blank=True, null=True) 
     Event_Time= models.CharField( max_length=63,blank=True, null=True) 
 
-    
+class Calendar(models.Model):
+
+    Type = models.CharField(max_length=50)
+    Calendar_Supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="supplier_calendar", blank=True, null=True)
+    Amount = models.FloatField(blank=True, null=True)
+    Calendar_Client = models.ForeignKey(Clients, on_delete=models.CASCADE, related_name="client_calendar", blank=True, null=True)
+    AppointmentType = models.CharField(max_length=50, blank=True, null=True)
+    Calendar_PowerPlant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE, related_name="powerplant_calendar", blank=True, null=True)
+    Site = models.CharField(max_length=255, blank=True, null=True)
+    RelatedPerson = models.CharField(max_length=255, blank=True, null=True)
+    Note = models.TextField(blank=True, null=True)
+    Date = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.Type} - {self.Date}"

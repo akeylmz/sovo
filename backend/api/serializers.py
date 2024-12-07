@@ -908,3 +908,18 @@ class DateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+from .models import Calendar
+
+class CalendarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Calendar
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return Calendar.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
