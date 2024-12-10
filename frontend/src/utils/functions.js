@@ -57,3 +57,54 @@ export const getDollarRate = async (date, timeOption) => {
     return { status: false, message: 'Dolar kuru alınamadı, tekrar deneyin' }
   }
 }
+
+export const checkOperationCareFinishDate = (finishDate) => {
+  const today = new Date()
+
+  // Türkçe ayları İngilizceye çeviren bir harita
+  const monthMap = {
+    Ocak: 'January',
+    Şubat: 'February',
+    Mart: 'March',
+    Nisan: 'April',
+    Mayıs: 'May',
+    Haziran: 'June',
+    Temmuz: 'July',
+    Ağustos: 'August',
+    Eylül: 'September',
+    Ekim: 'October',
+    Kasım: 'November',
+    Aralık: 'December',
+  }
+
+  // Gelen tarihi böl ve Türkçe ayı İngilizceye çevir
+  const [day, month, year] = finishDate.split(' ')
+  const englishMonth = monthMap[month]
+  const targetDate = new Date(`${englishMonth} ${day}, ${year}`)
+
+  // Tarih farkını hesapla
+  const diffInTime = targetDate - today
+  const diffInDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24))
+
+  // Koşulları kontrol et
+  if (diffInDays > 15) {
+    return ''
+  } else if (diffInDays <= 15 && diffInDays > 7) {
+    return '#ebc474'
+  } else if (diffInDays <= 7 && diffInDays > 0) {
+    return '#6fcaea'
+  } else {
+    return '#d893a3'
+  }
+}
+
+export const formatDateForCalendar = (date, includeTime = false) => {
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0') // Aylar 0-indexlidir
+  const day = String(d.getDate()).padStart(2, '0')
+  const hours = String(d.getHours()).padStart(2, '0')
+  const minutes = String(d.getMinutes()).padStart(2, '0')
+
+  return includeTime ? `${year}-${month}-${day} ${hours}:${minutes}` : `${year}-${month}-${day}`
+}

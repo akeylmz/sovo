@@ -1,3 +1,26 @@
+export const calendarAppointmentTypeList = [
+  { value: 'phone', label: 'Telefon' },
+  { value: 'in-person', label: 'Yüz Yüze' },
+]
+
+export const calendarTypeList = [
+  { value: 'payment', label: 'Ödeme' },
+  { value: 'sales', label: 'Satış Randevusu' },
+  { value: 'maintenance', label: 'İşletme Bakım' },
+]
+
+export const failSituationList = [
+  { value: 'Belirlendi', label: 'Belirlendi' },
+  { value: 'Onarımda', label: 'Onarımda' },
+  { value: 'Onarıldı', label: 'Onarıldı' },
+]
+
+export const failGuaranteeList = [
+  { value: 'Belirsiz', label: 'Belirsiz' },
+  { value: 'Evet', label: 'Evet' },
+  { value: 'Hayır', label: 'Hayır' },
+]
+
 export const directionList = [
   { value: 'Kuzey', label: 'Kuzey' },
   { value: 'Güney', label: 'Güney' },

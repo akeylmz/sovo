@@ -1,7 +1,7 @@
-import CustomTable from '../../../../custom/CustomTable'
-import { formatDate } from '../../../../../utils/valueFormatters'
+import CustomTable from '../../../custom/CustomTable'
+import { formatDate } from '../../../../utils/valueFormatters'
 
-function TrackBreakdownTable({ data, handleEdit }) {
+function BreakdownTable({ data, handleEdit }) {
   // Key değerlerinde başında 'x' olan alanlar formatlanmış veya yeni eklenmiş
   // alanları ifade etmektedir. Örnek olarak orijinal verideki bir tarih alanı
   // 2024-01-01 şeklinde gelmektedir. Bu veri formatlanarak 1 Ocak 2024 haline
@@ -27,4 +27,4 @@ function TrackBreakdownTable({ data, handleEdit }) {
 
   return <CustomTable data={newData} columns={columns} handleEdit={handleEdit} />
 }
-export default TrackBreakdownTable
+export default BreakdownTable

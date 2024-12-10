@@ -20,9 +20,12 @@ function TrackMaintenance() {
   }, [dispatch, id])
 
   useEffect(() => {
-    setFilteredDates([
+    const dateList = [
       ...new Set(singleOperationCare?.operation_inventors[0].inventor_strings.map((item) => item.String_Date)),
-    ])
+    ]
+    setFilteredDates(dateList)
+
+    setSelectedDate(dateList[dateList.length - 1])
   }, [singleOperationCare])
 
   useEffect(() => {
@@ -66,6 +69,7 @@ function TrackMaintenance() {
                     <select
                       className='rounded p-1 outline-none bg-gray-100 text-black'
                       onChange={(e) => setSelectedDate(e.target.value)}
+                      value={selectedDate ?? ''}
                     >
                       <option value='' hidden>
                         Tarih Seçin

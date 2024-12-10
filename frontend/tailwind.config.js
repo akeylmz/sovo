@@ -7,6 +7,11 @@ export default {
         'soento-white': '#f8f8f8',
         'soento-green': '#0a6865',
       },
+      width: {
+        one: '400px',
+        two: '750px',
+        three: '950px',
+      },
     },
   },
   plugins: [

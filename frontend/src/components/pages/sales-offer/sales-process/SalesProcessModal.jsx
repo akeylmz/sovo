@@ -95,7 +95,7 @@ function SalesProcessModal({ initialData, isRevise, onSubmit, onClose }) {
         >
           {({ values, setFieldValue }) => (
             <Form>
-              <div className='modal-body three-column'>
+              <div className='modal-body grid-cols-1 w-one xl:grid-cols-3 xl:w-three'>
                 {/* <div className='field-group'>
                   <div className='flex gap-2 items-center'>
                     <label className='field-title'>Firma Adı</label>

@@ -20,6 +20,15 @@ a {
   @apply bg-slate-400;
 }
 
+/* For mobile menu */
+.mobile-links a {
+  @apply rounded-xl px-4 py-2 font-medium bg-soento-white text-soento-green;
+}
+
+.mobile-links a.active {
+  @apply bg-soento-green text-soento-white;
+}
+
 /* For sidebar and navigation */
 
 .navlinks a.active {

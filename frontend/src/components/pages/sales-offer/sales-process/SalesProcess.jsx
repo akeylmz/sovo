@@ -154,7 +154,7 @@ function SalesProcess() {
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 100, // Press delay of 250ms
+        delay: 250, // Press delay of 250ms
         tolerance: 5, // Tolerance of 5px of movement
       },
     })
@@ -165,19 +165,21 @@ function SalesProcess() {
   return (
     <>
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-        <div className='grid grid-cols-7 gap-2 w-full' style={{ height: '85vh' }}>
-          {Object.keys(containers).map((category) => (
-            <Column
-              key={category}
-              category={category}
-              items={containers[category]}
-              handleEdit={openModalForEdit}
-              handleRevise={openModalForRevise}
-              handleJobWon={handleJobWon}
-              handleJobLost={handleJobLost}
-              handleJobPending={handleJobPending}
-            />
-          ))}
+        <div className='overflow-x-auto h-full rounded-xl'>
+          <div className='grid grid-cols-7 gap-2 h-full w-full min-w-[1400px]'>
+            {Object.keys(containers).map((category) => (
+              <Column
+                key={category}
+                category={category}
+                items={containers[category]}
+                handleEdit={openModalForEdit}
+                handleRevise={openModalForRevise}
+                handleJobWon={handleJobWon}
+                handleJobLost={handleJobLost}
+                handleJobPending={handleJobPending}
+              />
+            ))}
+          </div>
         </div>
 
         <DragOverlay>{activeItem ? <Card id={activeItem.id} item={activeItem} /> : null}</DragOverlay>

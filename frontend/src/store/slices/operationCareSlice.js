@@ -56,27 +56,6 @@ export const addPoll = createAsyncThunk('operationCare/addPoll', async (data) =>
 
 //------------------------------------------------------------------------------------------
 
-// Async action to fetch all data
-export const fetchFails = createAsyncThunk('operationCare/fetchFails', async () => {
-  const response = await axiosInstance.get('/fail')
-  return response.data
-})
-
-// Async action to add single data
-export const addFail = createAsyncThunk('operationCare/addFail', async (data) => {
-  const response = await axiosInstance.post('/fail/', data)
-  return response.data
-})
-
-// Async action to update single data
-export const updateFail = createAsyncThunk('operationCare/updateFail', async (data) => {
-  const { id, ...seperatedData } = data
-  const response = await axiosInstance.put(`/fail/${id}`, seperatedData)
-  return response.data
-})
-
-//------------------------------------------------------------------------------------------
-
 // Async action to update single data
 export const updateInventor = createAsyncThunk('operationCare/updateInventor', async (data) => {
   const { id, ...seperatedData } = data
@@ -90,6 +69,56 @@ export const updateInventor = createAsyncThunk('operationCare/updateInventor', a
 export const updateString = createAsyncThunk('operationCare/updateString', async (data) => {
   const { id, ...seperatedData } = data
   const response = await axiosInstance.put(`/string/${id}`, seperatedData)
+  return response.data
+})
+
+//------------------------------------------------------------------------------------------
+
+// Async action to fetch all data
+export const fetchFails = createAsyncThunk('operationCare/fetchFails', async () => {
+  const response = await axiosInstance.get('/fail')
+  return response.data
+})
+
+// Async action to add single data
+export const addFail = createAsyncThunk('operationCare/addFail', async (data) => {
+  let formData
+
+  // Eğer data bir dosya içeriyorsa FormData kullan
+  if (data.Fail_Bill_File) {
+    formData = new FormData()
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key])
+    })
+  }
+
+  // Eğer dosya yoksa data'yı olduğu gibi gönder
+  const response = await axiosInstance.post('/fail/', formData || data, {
+    headers: formData ? { 'Content-Type': 'multipart/form-data' } : {},
+  })
+
+  return response.data
+})
+
+// Async action to update single data
+export const updateFail = createAsyncThunk('operationCare/updateFail', async (data) => {
+  const { id, ...seperatedData } = data
+
+  let formData
+
+  // Eğer seperatedData bir dosya içeriyorsa FormData kullan
+  if (seperatedData.Fail_Bill_File) {
+    formData = new FormData()
+    Object.keys(seperatedData).forEach((key) => {
+      formData.append(key, seperatedData[key])
+    })
+  }
+
+  // Eğer dosya yoksa seperatedData'yı olduğu gibi gönder
+  const response = await axiosInstance.put(`/fail/${id}`, formData || seperatedData, {
+    headers: formData ? { 'Content-Type': 'multipart/form-data' } : {},
+  })
+
   return response.data
 })
 

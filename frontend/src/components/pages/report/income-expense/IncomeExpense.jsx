@@ -8,6 +8,7 @@ import { formatNumber } from '../../../../utils/valueFormatters'
 import TableIncome from './TableIncome'
 import TableExpense from './TableExpense'
 import TableJobHistory from './TableJobHistory'
+import SeperatedReportItem from './SeperatedReportItem'
 
 const processDataIncome = (projects) => {
   const resultIncome = []
@@ -169,6 +170,8 @@ function IncomeExpense() {
             icon={<TbCurrencyLira />}
           />
 
+          <SeperatedReportItem type='genel' />
+
           <TableIncome data={resultIncome ?? []} />
         </div>
 
@@ -184,6 +187,8 @@ function IncomeExpense() {
             icon={<TbCurrencyLira />}
           />
 
+          <SeperatedReportItem type='detay' />
+
           <TableJobHistory data={resultJobHistory ?? []} />
         </div>
 
@@ -198,6 +203,8 @@ function IncomeExpense() {
             data={resultExpense ? formatNumber(totalTRYExpense) : '0,00'}
             icon={<TbCurrencyLira />}
           />
+
+          <SeperatedReportItem type='kar' />
 
           <TableExpense data={resultExpense ?? []} />
         </div>

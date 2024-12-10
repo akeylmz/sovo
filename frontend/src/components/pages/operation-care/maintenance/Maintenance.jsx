@@ -1,4 +1,4 @@
-import { fetchOperationCares, updateOperationCare } from '../../../../store/slices/operationCareSlice'
+import { fetchOperationCares, fetchFails, updateOperationCare } from '../../../../store/slices/operationCareSlice'
 import ErrorOccurred from '../../../custom/ErrorOccurred'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../../custom/Loader'
@@ -8,13 +8,14 @@ import MaintenanceModal from './MaintenanceModal'
 
 function Maintenance() {
   const dispatch = useDispatch()
-  const { operationCares, loading, error } = useSelector((state) => state.operationCare)
+  const { operationCares, fails, loading, error } = useSelector((state) => state.operationCare)
 
   const [showModal, setShowModal] = useState(false)
   const [currentData, setCurrentData] = useState(null) // Güncellenecek veri için
 
   useEffect(() => {
     dispatch(fetchOperationCares()) // Sayfa yüklenirken tüm veriyi getir
+    dispatch(fetchFails()) // Sayfa yüklenirken tüm veriyi getir
   }, [dispatch])
 
   const openModalForEdit = (item) => {
@@ -30,7 +31,12 @@ function Maintenance() {
 
   return (
     <>
-      <MaintenanceTable data={operationCares} handleEdit={openModalForEdit} handleMaintenanceDetail={true} />
+      <MaintenanceTable
+        data={operationCares}
+        fails={fails}
+        handleEdit={openModalForEdit}
+        handleMaintenanceDetail={true}
+      />
 
       {showModal && (
         <MaintenanceModal initialData={currentData} onSubmit={handleSubmit} onClose={() => setShowModal(false)} />

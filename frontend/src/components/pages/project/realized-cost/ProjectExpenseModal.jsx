@@ -77,7 +77,7 @@ function ProjectExpenseModal({ initialData, onSubmit, onClose }) {
         >
           {({ values, errors, setFieldValue, setFieldError }) => (
             <Form>
-              <div className='modal-body two-column'>
+              <div className='modal-body grid-cols-1 w-one xl:grid-cols-2 xl:w-two'>
                 <div className='field-group'>
                   <div className='flex gap-2 items-center'>
                     <label className='field-title'>Ödeme Yapılan Firma</label>

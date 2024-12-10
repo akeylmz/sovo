@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/ // 15:30
 const phoneRegex = /^\(\d{3}\) \d{3} \d{2} \d{2}$/ // (555) 555 55 55
 const dateRegex = /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/ // 2024-10-15 (for api)
 
@@ -141,4 +142,74 @@ export const powerPlantValidation = Yup.object({
 
 export const relatedPersonValidation = Yup.object({
   PersonRelatedName: Yup.string().required('Bu alan zorunludur'),
+})
+
+export const failValidation = Yup.object({
+  Fail_Operation_Care: Yup.string().required('Bu alan zorunludur'),
+  Fail_Central_Name: Yup.string(),
+  Fail_Information_Person: Yup.string(),
+  Fail_Detection_Date: dateValidation,
+  Fail_Team_Info_Date: dateValidation,
+  Fail_Repair_Date: dateValidation,
+  Fail_Guaranteed: Yup.string(),
+  Fail_Situation: Yup.string(),
+  Fail_Detail: Yup.string(),
+})
+
+export const failInvoiceValidation = Yup.object({
+  Fail_Bill_Central_Name: Yup.string(),
+  Fail_Bill_Process: Yup.string(),
+  Fail_Bill_Date: dateValidation,
+  Fail_Bill_Detail: Yup.string(),
+  Fail_Bill_File: Yup.mixed()
+    .required('Lütfen fatura belgesi seçiniz!')
+    .test('fileSize', 'Dosya boyutu 0’dan büyük olmalıdır.', (value) => {
+      return value && value.size > 0
+    }),
+})
+
+export const calendarValidation = Yup.object({
+  Type: Yup.string().required('Bu alan zorunludur'),
+
+  Calendar_Supplier: Yup.string().when('Type', {
+    is: (type) => type === 'payment',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+  Amount: Yup.string().when('Type', {
+    is: (type) => type === 'payment',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+  Time: Yup.string().when('Type', {
+    is: (type) => type === 'payment',
+    then: (schema) => schema.required('Bu alan zorunludur').matches(timeRegex, 'Saat formatı geçersiz'),
+    otherwise: (schema) => schema,
+  }),
+
+  Calendar_Client: Yup.string().when('Type', {
+    is: (type) => type === 'sales',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+  AppointmentType: Yup.string().when('Type', {
+    is: (type) => type === 'sales',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+
+  Calendar_PowerPlant: Yup.string().when('Type', {
+    is: (type) => type === 'maintenance',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+  Site: Yup.string().when('Type', {
+    is: (type) => type === 'maintenance',
+    then: (schema) => schema.required('Bu alan zorunludur'),
+    otherwise: (schema) => schema,
+  }),
+
+  RelatedPerson: Yup.string(),
+  Note: Yup.string(),
+  Date: Yup.string().matches(dateRegex, 'Tarih formatı geçersiz').required('Bu alan zorunludur'),
 })

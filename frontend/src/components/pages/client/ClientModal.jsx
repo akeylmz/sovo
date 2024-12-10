@@ -47,7 +47,7 @@ function ClientModal({ initialData, onSubmit, onClose }) {
         >
           {() => (
             <Form>
-              <div className='modal-body two-column'>
+              <div className='modal-body grid-cols-1 w-one xl:grid-cols-2 xl:w-two'>
                 <div className='field-group'>
                   <label className='field-title'>Müşteri Adı</label>
                   <Field

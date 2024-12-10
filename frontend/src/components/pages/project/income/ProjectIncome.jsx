@@ -1,4 +1,3 @@
-import { IoMdAddCircle, IoMdArrowRoundBack, BiDollarCircle, TbCurrencyLira } from '../../../../styles/icons'
 import Loader from '../../../custom/Loader'
 import ProjectIncomeModal from './ProjectIncomeModal'
 import ProjectIncomeTable from './ProjectIncomeTable'
@@ -8,12 +7,14 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { formatNumber } from '../../../../utils/valueFormatters'
 import { fetchSingleProject, addProjectIncome, updateProjectIncome } from '../../../../store/slices/projectSlice'
+import { IoMdAddCircle, IoMdArrowRoundBack, BiDollarCircle, TbCurrencyLira, IoMenu } from '../../../../styles/icons'
 
 function ProjectIncome() {
   const { id } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { singleProject, loading, error } = useSelector((state) => state.project)
+  const [mobileMenu, setMobileMenu] = useState(false)
 
   const [showModal, setShowModal] = useState(false)
   const [currentData, setCurrentData] = useState(null) // Güncellenecek veri için
@@ -77,7 +78,8 @@ function ProjectIncome() {
           </button>
         </div>
 
-        <div className='flex items-center gap-1 rounded-full p-1 bg-soento-green'>
+        {/* desktop view */}
+        <div className='hidden xl:flex items-center gap-1 rounded-full p-1 bg-soento-green'>
           <div className='flex items-center gap-3 rounded-full pl-5 pr-2 py-1 bg-soento-green text-soento-white'>
             <p>{singleProject?.ProjectName}</p>
             <span>|</span>
@@ -93,6 +95,40 @@ function ProjectIncome() {
             <IoMdAddCircle className='text-lg' /> Gelir Ekle
           </button>
         </div>
+
+        {/* mobile view */}
+        <div className='flex xl:hidden'>
+          <button onClick={() => setMobileMenu(true)} className='px-2 text-soento-green'>
+            <IoMenu className='text-3xl' />
+          </button>
+        </div>
+
+        {/* menu */}
+        {mobileMenu && (
+          <div
+            className='absolute top-0 left-0 z-10 w-full h-screen flex items-center justify-center bg-opacity-70 bg-black'
+            onClick={() => setMobileMenu(false)}
+          >
+            <div className='rounded-xl p-4 w-4/5 max-w-sm bg-soento-white'>
+              <div className='mobile-links flex flex-col gap-1.5'>
+                <div className='flex flex-col gap-1 rounded-xl px-4 py-2 border border-gray-400 font-medium text-soento-green'>
+                  <p>{singleProject?.ProjectName}</p>
+                  <hr className='bg-soento-green' />
+                  <p>{singleProject?.client.CompanyName_Clients}</p>
+                  <hr className='bg-soento-green' />
+                  <p>{singleProject?.CompanyUndertakingWork}</p>
+                </div>
+
+                <button
+                  className='flex gap-2 items-center rounded-xl p-2 font-medium bg-soento-white text-soento-green'
+                  onClick={openModalForAdd}
+                >
+                  <IoMdAddCircle className='text-lg' /> Gelir Ekle
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 mb-4'>

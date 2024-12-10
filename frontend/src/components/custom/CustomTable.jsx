@@ -1,8 +1,9 @@
 import {
   FaBook,
   FaSort,
-  FaSortUp,
   FaCircle,
+  FaSortUp,
+  FaFileAlt,
   FaSortDown,
   BiSolidEdit,
   MdManageSearch,
@@ -12,6 +13,7 @@ import {
 } from '../../styles/icons.js'
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { checkOperationCareFinishDate } from '../../utils/functions.js'
 
 const CustomTable = ({
   data,
@@ -181,6 +183,36 @@ const CustomTable = ({
                       ) : handleReviseDetail && col.key === 'x_Situation_Card' ? (
                         <div className='flex items-center gap-2'>
                           <FaCircle style={{ color: colorMap[item[col.key]] || '#000' }} />
+                          {item[col.key]}
+                        </div>
+                      ) : col.key === 'Fail_Situation' ? (
+                        <div
+                          className='rounded-full text-center font-semibold p-2 -my-2'
+                          style={{
+                            backgroundColor:
+                              item[col.key] == 'Belirlendi'
+                                ? '#d893a3'
+                                : item[col.key] == 'Onarımda'
+                                ? '#ebc474'
+                                : '#7ad068',
+                          }}
+                        >
+                          {item[col.key]}
+                        </div>
+                      ) : col.key === 'Fail_Bill_File' ? (
+                        <a href={`${item[col.key]}`} target='_blank' download>
+                          <button
+                            type='button'
+                            className='flex gap-2 px-4 py-2 -my-2 font-semibold rounded-full text-gray-800 bg-slate-300'
+                          >
+                            <FaFileAlt /> Dosyayı Görüntüle
+                          </button>
+                        </a>
+                      ) : col.key === 'x_Operation_Care_Finish_Date' ? (
+                        <div
+                          className='px-4 py-2 -my-2 font-semibold rounded-full text-center'
+                          style={{ backgroundColor: checkOperationCareFinishDate(item[col.key]) }}
+                        >
                           {item[col.key]}
                         </div>
                       ) : (

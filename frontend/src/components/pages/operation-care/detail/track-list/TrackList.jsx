@@ -659,7 +659,7 @@ function TrackList() {
                     <td className='px-4 py-2'>{row.description}</td>
                     <td className='px-4 py-2'>{row.method}</td>
                     <td className='px-4 py-2'>
-                      <div className='grid grid-cols-4 min-w-40'>
+                      <div className='grid grid-cols-4 min-w-60'>
                         <input
                           className='accent-soento-green'
                           type='checkbox'
@@ -705,10 +705,8 @@ function TrackList() {
           </tbody>
         </table>
 
-        <div className='flex flex-col gap-4 mx-3 mt-8 mb-3'>
-          {/* <span className='font-bold text-2xl text-center'>YORUMLAR</span> */}
-
-          <div className='grid grid-cols-2 gap-4'>
+        <div className='flex flex-col gap-4 mx-3 mt-8 mb-3 w-max'>
+          <div className='grid grid-cols-2 gap-4 w-max'>
             <div className='flex flex-col gap-2'>
               <textarea
                 className='border rounded-lg p-2 bg-slate-200 outline-soento-green'

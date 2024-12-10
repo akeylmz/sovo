@@ -33,7 +33,7 @@ function ReportItem({ data }) {
   }
 
   const kar = {
-    labels: ['KDV İADESİ HARİÇ KAR', 'KDV İADESİ DAHİL KAR'],
+    labels: ['KDV İADESİ HARİÇ', 'KDV İADESİ DAHİL'],
     datasets: [
       {
         label: 'Tutar',

@@ -65,8 +65,14 @@ import { MdAddBox } from 'react-icons/md'
 import { FaFilterCircleXmark } from 'react-icons/fa6'
 import { RiExchange2Fill } from 'react-icons/ri'
 import { RxOpenInNewWindow } from 'react-icons/rx'
+import { FaFileAlt } from 'react-icons/fa'
+import { MdDelete } from 'react-icons/md'
+import { IoMenu } from 'react-icons/io5'
 
 export {
+  IoMenu,
+  MdDelete,
+  FaFileAlt,
   RxOpenInNewWindow,
   RiExchange2Fill,
   FaFilterCircleXmark,
