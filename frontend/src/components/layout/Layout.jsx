@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Navbar from './/Navbar'
 import Content from './Content'
-import Navigation from './Navigation'
 
 function Layout() {
   return (
@@ -12,7 +11,6 @@ function Layout() {
       <Content>
         <Outlet /> {/* Content for both view */}
       </Content>
-      <Navigation /> {/* Navigation for mobile view */}
     </div>
   )
 }

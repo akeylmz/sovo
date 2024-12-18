@@ -4,8 +4,18 @@ import { useDraggable } from '@dnd-kit/core'
 import { useState, useEffect, useRef } from 'react'
 import CardCommentModal from './CardCommentModal'
 import CardFileModal from './CardFileModal'
+import { BiMoveHorizontal } from 'react-icons/bi'
 
-export function Card({ id, item, handleEdit, handleRevise, handleJobWon, handleJobLost, handleJobPending }) {
+export function Card({
+  id,
+  item,
+  handleChangeStatus,
+  handleEdit,
+  handleRevise,
+  handleJobWon,
+  handleJobLost,
+  handleJobPending,
+}) {
   const { setNodeRef, attributes, listeners, transform } = useDraggable({ id })
 
   const menuRef = useRef(null) // Açılır menü referansı
@@ -62,35 +72,42 @@ export function Card({ id, item, handleEdit, handleRevise, handleJobWon, handleJ
             {showMenu && (
               <div className='absolute flex flex-col justify-center gap-1 size-full text-white bg-white' ref={menuRef}>
                 <button
-                  className=' flex items-center gap-2 rounded p-1.5 bg-soento-green'
+                  className='flex xl:hidden items-center gap-2 rounded p-1.5 bg-soento-green'
+                  onClick={() => handleChangeStatus(item)}
+                >
+                  <BiMoveHorizontal className='text-xl' />
+                  <span className='leading-none'>Durum Değişimi</span>
+                </button>
+                <button
+                  className='flex items-center gap-2 rounded p-1.5 bg-soento-green'
                   onClick={() => handleEdit(item)}
                 >
                   <AiFillEdit className='text-xl' />
                   <span className='leading-none'>Güncelle</span>
                 </button>
                 <button
-                  className=' flex items-center gap-2 rounded p-1.5 bg-soento-green'
+                  className='flex items-center gap-2 rounded p-1.5 bg-soento-green'
                   onClick={() => handleJobWon(item)}
                 >
                   <MdOutlineKeyboardDoubleArrowRight className='text-xl' />
                   <span className='leading-none'>Kazanıldı</span>
                 </button>
                 <button
-                  className=' flex items-center gap-2 rounded p-1.5 bg-soento-green'
+                  className='flex items-center gap-2 rounded p-1.5 bg-soento-green'
                   onClick={() => handleJobLost(item)}
                 >
                   <MdOutlineKeyboardDoubleArrowRight className='text-xl' />
                   <span className='leading-none'>Kaybedildi</span>
                 </button>
                 <button
-                  className=' flex items-center gap-2 rounded p-1.5 bg-soento-green'
+                  className='flex items-center gap-2 rounded p-1.5 bg-soento-green'
                   onClick={() => handleJobPending(item)}
                 >
                   <MdOutlineKeyboardDoubleArrowRight className='text-xl' />
                   <span className='leading-none'>Bekleyen</span>
                 </button>
                 <button
-                  className=' flex items-center gap-2 rounded p-1.5 bg-soento-green'
+                  className='flex items-center gap-2 rounded p-1.5 bg-soento-green'
                   onClick={() => handleRevise(item)}
                 >
                   <BiRevision className='text-xl' />

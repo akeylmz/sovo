@@ -68,8 +68,10 @@ import { RxOpenInNewWindow } from 'react-icons/rx'
 import { FaFileAlt } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 import { IoMenu } from 'react-icons/io5'
+import { CgMenuGridO } from 'react-icons/cg'
 
 export {
+  CgMenuGridO,
   IoMenu,
   MdDelete,
   FaFileAlt,

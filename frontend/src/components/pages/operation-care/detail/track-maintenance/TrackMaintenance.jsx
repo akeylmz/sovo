@@ -25,8 +25,10 @@ function TrackMaintenance() {
     ]
     setFilteredDates(dateList)
 
-    setSelectedDate(dateList[dateList.length - 1])
-  }, [singleOperationCare])
+    if (!selectedDate && dateList.length > 0) {
+      setSelectedDate(dateList[dateList.length - 1])
+    }
+  }, [singleOperationCare, selectedDate])
 
   useEffect(() => {
     const filteredStrings = singleOperationCare?.operation_inventors

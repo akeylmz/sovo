@@ -4,7 +4,16 @@ import { useDroppable } from '@dnd-kit/core'
 import '../../../../styles/SalesOffer.css'
 import { Card } from './Card'
 
-export function Column({ category, items, handleEdit, handleRevise, handleJobWon, handleJobLost, handleJobPending }) {
+export function Column({
+  category,
+  items,
+  handleChangeStatus,
+  handleEdit,
+  handleRevise,
+  handleJobWon,
+  handleJobLost,
+  handleJobPending,
+}) {
   const { isOver, setNodeRef } = useDroppable({ id: category })
 
   const getColorByColumn = (title) => {
@@ -60,6 +69,7 @@ export function Column({ category, items, handleEdit, handleRevise, handleJobWon
                 key={item.id}
                 id={item.id}
                 item={item}
+                handleChangeStatus={handleChangeStatus}
                 handleEdit={handleEdit}
                 handleRevise={handleRevise}
                 handleJobWon={handleJobWon}

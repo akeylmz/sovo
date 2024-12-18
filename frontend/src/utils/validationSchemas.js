@@ -144,6 +144,10 @@ export const relatedPersonValidation = Yup.object({
   PersonRelatedName: Yup.string().required('Bu alan zorunludur'),
 })
 
+export const situationCardValidation = Yup.object({
+  Situation_Card: Yup.string().required('Bu alan zorunludur'),
+})
+
 export const failValidation = Yup.object({
   Fail_Operation_Care: Yup.string().required('Bu alan zorunludur'),
   Fail_Central_Name: Yup.string(),

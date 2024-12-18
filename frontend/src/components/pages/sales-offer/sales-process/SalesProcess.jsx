@@ -15,6 +15,7 @@ import {
 } from '../../../../store/slices/salesOfferSlice'
 
 import { addClient } from '../../../../store/slices/clientSlice'
+import ChangeStatusModal from './ChangeStatusModal'
 
 const categories = [
   'Potansiyel Müşteri',
@@ -33,6 +34,9 @@ function SalesProcess() {
   // Güncellenecek ve revize alınacak veri için
   const [showModal, setShowModal, currentData, setCurrentData, isRevise, setIsRevise] = useOutletContext()
 
+  // Durum değişim modalı için
+  const [showChangeStatusModal, setShowChangeStatusModal] = useState(false)
+
   const [containers, setContainers] = useState({}) // Sütunlar ve kartlar için
   const [activeId, setActiveId] = useState(null) // Sürüklenen öğeyi takip etmek için
 
@@ -50,6 +54,12 @@ function SalesProcess() {
     setCurrentData(item) // Revizyon için mevcut veriyi ayarla
     setIsRevise(true)
     setShowModal(true)
+  }
+
+  const openModalForChangeStatus = (item) => {
+    setCurrentData(item) // Durum değişimi için mevcut veriyi ayarla
+    setIsRevise(false)
+    setShowChangeStatusModal(true)
   }
 
   // For add, update, revise modals
@@ -172,6 +182,7 @@ function SalesProcess() {
                 key={category}
                 category={category}
                 items={containers[category]}
+                handleChangeStatus={openModalForChangeStatus}
                 handleEdit={openModalForEdit}
                 handleRevise={openModalForRevise}
                 handleJobWon={handleJobWon}
@@ -191,6 +202,14 @@ function SalesProcess() {
           isRevise={isRevise}
           onSubmit={handleSubmit}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {showChangeStatusModal && (
+        <ChangeStatusModal
+          initialData={currentData}
+          isRevise={isRevise}
+          onClose={() => setShowChangeStatusModal(false)}
         />
       )}
 
